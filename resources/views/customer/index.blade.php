@@ -1,0 +1,87 @@
+@extends('backend-layout')
+
+@section('title', 'Customer List')
+
+@php
+    $parse_body_tag = false;    
+@endphp
+
+{{-- @section('stylesheets')
+@parent
+<link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
+@endsection --}}
+
+@section('content-1')
+{{-- <div class="x_panel"> --}}
+    <table class="table table-bordered table-striped" id="customers_table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>IC/Passport</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @if($customers->count())
+        @foreach($customers as $customer)
+            <tr>
+                <td>
+                    <a href="{{ route('customers.show', compact('customer')) }}">
+                        {{ $customer->full_name }}
+                    </a>
+                </td>
+                <td>{{ $customer->phone }}</td>
+                <td>{{ $customer->ic_number }}</td>
+                <td>
+                    <a href="{{ route('customers.select', compact('customer')) }}" class="btn btn-primary">Select Customer</a>
+                </td>
+            </tr>
+        @endforeach
+
+        {{ $customers->links() }}
+
+        @else
+            <tr>
+                <td colspan="4">No data</td>
+            </tr>
+        @endif
+        </tbody>
+    </table>
+
+    <div>
+
+    </div>
+{{-- </div> --}}
+@endsection
+
+@section('scripts')
+@parent
+@include('datatables')
+
+{{-- <script type="text/javascript" src="{{ asset('js/datatables.js') }}"></script> --}}
+
+<script>
+$(document).ready( function () {
+    // let dt = $('#customers_table').DataTable({
+        // serverSide: true,
+        // ajax: "{{ url('api/customers') }}",
+        // dataSrc: 'data',
+        // columns: [
+        //     {
+        //         data: 'full_name',
+        //         render: function(data, type, row) {
+        //             let url = "{{ url('customers') }}";
+        //             return "<a href='" + url + '/' + row.id + "'>" + data + "</a>";
+        //         }
+        //     },
+        //     { data: 'phone' },
+        //     { data: 'ic_number' },
+        // ],
+        // paging: true,
+    // });
+
+} );
+</script>
+@endsection

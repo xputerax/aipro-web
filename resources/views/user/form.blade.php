@@ -1,0 +1,120 @@
+@extends('backend-layout')
+
+@if(Route::currentRouteName() === "users.create")
+    @section('title', 'Add New User')
+@elseif(Route::currentRouteName() === "users.edit")
+    @section('title')
+    Edit User {{ $user->full_name }}
+    @endsection
+@endif
+
+@php
+    $parse_body_tag = false;    
+@endphp
+
+@section('content-1')
+<div class="x_panel">
+    <div class="x_content">
+        
+        @if(Route::currentRouteName() == "users.create")
+        <form action="{{ route('users.store') }}" class="form-horizontal form-label-left" method="post">
+        @elseif(Route::currentRouteName() == "users.edit")
+        <form action="{{ route('users.update', compact('user')) }}" class="form-horizontal form-label-left" method="post">
+        @method('PUT')
+        @endif
+
+            @csrf
+
+            <!-- start email section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="email" name="email" value="@if(isset($user)){{ $user->email }}@endif" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <!-- end email section -->
+
+            <!-- start username section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" name="username" value="@if(isset($user)){{ $user->username }}@endif" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <!-- end username section -->
+
+            <!-- start full name section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="full_name">Full Name</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" name="full_name" value="@if(isset($user)){{ $user->full_name }}@endif" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <!-- end full name section -->
+                
+            <!-- start password section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="password" name="password" value="" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <!-- end password section -->
+            
+            <!-- start group section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="group">Group</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @if($groups->count())
+                    <select name="group_id" id="group_select" class="form-control select2_single">
+                        @foreach($groups as $group)
+                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                    @endif
+                </div>
+            </div>
+            <!-- end group section -->
+            
+            <!-- start branch section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="branch_id">Branch</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @if($branches->count())
+                    <select name="branch_id" id="branch_select" class="form-control select2_single">
+                        @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                        @endforeach
+                    </select>
+                    @endif
+                </div>
+            </div>
+            <!-- end branch section -->
+            
+            <!-- start button section -->
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-sm-3 col-xs-12 col-md-9 col-sm-9">
+                    @if(Route::currentRouteName() == "users.create")
+                    <input type="submit" value="Add User" class="btn btn-primary">
+                    @elseif(Route::currentRouteName() == "users.edit")
+                    <input type="submit" value="Save User" class="btn btn-primary">
+                    @endif
+                </div>
+            </div>
+            <!-- end button section -->
+
+        </form>
+    </div> <!-- end .x_content -->
+</div> <!-- end .x_panel -->
+@endsection
+
+@section('scripts')
+@parent
+
+<script>
+$(function() {
+    let group_select = $("#group_select").select2();
+    let branch_select = $("#branch_select").select2();
+});
+</script>
+@endsection
