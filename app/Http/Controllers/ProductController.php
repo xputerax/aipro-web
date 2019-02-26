@@ -7,6 +7,7 @@ use App\Cart;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->get();
+        $products = Product::where('branch_id', Auth::user()->branch->id)
+            ->latest()
+            ->get();
 
         return view('product.index', compact('products'));
     }
@@ -29,7 +32,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = Brand::orderBy('name', 'asc')->get();
+        $brands = Brand::where('branch_id', Auth::user()->branch->id)
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('product.form', compact('brands'));
     }
@@ -44,6 +49,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateData($request);
+        $data['branch_id'] = Auth::user()->branch->id;
+
         $product = new Product($data);
         $product->save();
 
@@ -71,7 +78,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $brands = Brand::latest()->get();
+        $brands = Brand::where('branch_id', Auth::user()->branch->id)
+            ->latest()
+            ->get();
 
         return view('product.form', compact('product', 'brands'));
     }
@@ -89,10 +98,14 @@ class ProductController extends Controller
         $data = $this->validateData($request);
 
         if ($product->update($data)) {
-            return redirect()->route('products.show', compact('product'))->with('message', 'The product has been updated');
+            return redirect()
+                ->route('products.show', compact('product'))
+                ->with('message', 'The product has been updated');
         }
 
-        return redirect()->route('products.show', compact('product'))->with('message', 'Failed to update product');
+        return redirect()
+            ->route('products.show', compact('product'))
+            ->with('message', 'Failed to update product');
     }
 
     /**
