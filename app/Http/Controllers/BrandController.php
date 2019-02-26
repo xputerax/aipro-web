@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BrandController extends Controller
 {
@@ -14,7 +15,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::latest()->get();
+        $brands = Brand::where('branch_id', Auth::user()->branch->id)
+                ->latest()
+                ->get();
 
         return view('brand.index', compact('brands'));
     }
@@ -39,6 +42,7 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateData($request);
+        $data['branch_id'] = Auth::user()->branch->id;
         $brand = new Brand($data);
         $brand->save();
 
@@ -79,6 +83,10 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
+        $data = $this->validateData($request);
+        $brand->update($data);
+
+        return redirect()->route('brands.edit', compact('brand'));
     }
 
     /**
