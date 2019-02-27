@@ -100,7 +100,7 @@ class AuthServiceProvider extends ServiceProvider
             return true;
         });
 
-        Gate::define('show-customer', function($user, $customer) {
+        Gate::define('view-customer', function($user, $customer) {
             return $user->branch->id === $customer->branch_id;
         });
 
@@ -123,7 +123,7 @@ class AuthServiceProvider extends ServiceProvider
             return true;
         });
 
-        Gate::define('show-order', function($user, $order) {
+        Gate::define('view-order', function($user, $order) {
             return $user->branch->id === $order->customer->branch->id;
         });
 
@@ -146,7 +146,7 @@ class AuthServiceProvider extends ServiceProvider
             return true;
         });
 
-        Gate::define('show-product', function($user, $product) {
+        Gate::define('view-product', function($user, $product) {
             return $user->branch->id === $product->branch_id;
         });
 
@@ -169,7 +169,7 @@ class AuthServiceProvider extends ServiceProvider
             return $currentUser->group_id === self::AIPRO_MANAGER_GROUP_ID;
         });
 
-        Gate::define('show-user', function($currentUser, $user) {
+        Gate::define('view-user', function($currentUser, $user) {
             return $currentUser->group_id === self::AIPRO_MANAGER_GROUP_ID
                 && $currentUser->branch->id === $user->branch->id;
         });
