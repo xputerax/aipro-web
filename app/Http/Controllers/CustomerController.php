@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 class CustomerController extends Controller
 {
     const CUSTOMERS_PER_PAGE = 15;
-    // const CUSTOMER_ID_SESSION_KEY = 'customer_id';
 
     /**
      * Display a listing of the resource.
@@ -18,9 +17,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::latest()->paginate(self::CUSTOMERS_PER_PAGE);
+        Auth::user()->can('list-customer') ?: abort(403);
 
-        // dd($customers);
+        $customers = Customer::where('branch_id', Auth::user()->branch->id)
+            ->latest()
+            ->paginate(self::CUSTOMERS_PER_PAGE);
 
         return view('customer.index', compact('customers'));
     }
@@ -32,6 +33,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-customer') ?: abort(403);
+
         return view('customer.form');
     }
 
@@ -44,8 +47,11 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $validated_data = $this->validateData($request);
         $user = Auth::user();
+
+        $user->can('create-customer') ?: abort(403);
+
+        $validated_data = $this->validateData($request);
         $branch = $user->branch;
 
         /**
@@ -73,6 +79,8 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        Auth::user()->can('view-customer') ?: abort(403);
+
         return view('customer.view', compact('customer'));
     }
 
@@ -85,6 +93,8 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        Auth::user()->can('edit-customer') ?: abort(403);
+
         return view('customer.form', compact('customer'));
     }
 
@@ -98,6 +108,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
+        Auth::user()->can('edit-customer') ?: abort(403);
+
         $validated_data = $this->validateData($request);
         $customer->update($validated_data);
         $request->session()->flash('message', 'Customer saved');
@@ -114,28 +126,59 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
+        Auth::user()->can('delete-customer') ?: abort(403);
+
         $customer->delete();
 
         return redirect()->route('customers.index');
     }
 
+    /**
+     * Store the selected customer into session
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Customer $customer
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function select(Request $request, Customer $customer)
     {
+        Auth::user()->can('select-customer') ?: abort(403);
+
         $request->session()->put('customer', clone $customer);
 
         return redirect()->route('products.index');
     }
 
+    /**
+     * Remove the selected customer from session
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function deselect()
     {
+        Auth::user()->can('select-customer') ?: abort(403);
+
         return view('customer.deselect');
     }
 
+    /**
+     * View the selected customer
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function selected()
     {
+        Auth::user()->can('select-customer') ?: abort(403);
+
         return view('customer.selected');
     }
 
+    /**
+     * Returns the validation rules for creating and editing customer
+     *
+     * @return array
+     */
     protected function validationRules()
     {
         return [
@@ -163,6 +206,12 @@ class CustomerController extends Controller
         ];
     }
 
+    /**
+     * Returns the validated form input
+     *
+     * @param Request $request
+     * @return array
+     */
     protected function validateData(Request $request)
     {
         return $request->validate($this->validationRules());

@@ -16,7 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withTrashed()->get();
+        Auth::user()->can('list-user') ?: abort(403);
+
+        $users = User::where('branch_id', Auth::user()->branch->id)
+            ->withTrashed()
+            ->get();
 
         return view('user.index', compact('users'));
     }
@@ -28,6 +32,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-user') ?: abort(403);
+
         $groups = Group::all();
         $branches = Branch::all();
 
@@ -43,6 +49,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        Auth::user()->can('create-user') ?: abort(403);
+
         $data = $this->validateData($request);
 
         $user = new User($data);
@@ -60,6 +68,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        Auth::user()->can('view-user') ?: abort(403);
+
         return view('user.view', compact('user'));
     }
 
@@ -72,6 +82,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        Auth::user()->can('edit-user') ?: abort(403);
+
         return view('user.form', compact('user'));
     }
 
@@ -85,6 +97,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        Auth::user()->can('edit-user') ?: abort(403);
     }
 
     /**
@@ -96,6 +109,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Auth::user()->can('delete-user') ?: abort(403);
     }
 
     /**

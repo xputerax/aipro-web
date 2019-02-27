@@ -18,7 +18,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::latest()->get();
+        Auth::user()->can('list-order') ?: abort(403);
+
+        $orders = Order::where('branch_id', Auth::user()->branch->id)
+            ->latest()
+            ->get();
 
         return view('order.index', compact('orders'));
     }
@@ -30,6 +34,8 @@ class OrderController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-order') ?: abort(403);
+
         return view('order.create');
     }
 
@@ -42,6 +48,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        Auth::user()->can('create-order') ?: abort(403);
     }
 
     /**
@@ -53,6 +60,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        Auth::user()->can('view-order') ?: abort(403);
+
         return view('order.view', compact('order'));
     }
 
@@ -65,6 +74,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        Auth::user()->can('edit-order') ?: abort(403);
     }
 
     /**
@@ -77,6 +87,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        Auth::user()->can('edit-order') ?: abort(403);
     }
 
     /**
@@ -88,8 +99,16 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        Auth::user()->can('delete-order') ?: abort(403);
     }
 
+    /**
+     * Generates the order receipt
+     *
+     * @param Order $order
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function generateReceipt(Order $order)
     {
         $invoice = Invoice::where('order_id', $order->id)->first();
@@ -126,6 +145,13 @@ class OrderController extends Controller
         ]), '-').'.pdf';
     }
 
+    /**
+     * Get the full invoice file name
+     *
+     * @param \App\Order $order
+     *
+     * @return string
+     */
     protected function getFullInvoiceFileName($order)
     {
         return storage_path('invoices/'.$order->invoice->invoice_file);
@@ -148,6 +174,12 @@ class OrderController extends Controller
         return $invoice;
     }
 
+    /**
+     * Write the invoice content to file
+     *
+     * @param \App\Order $order
+     * @return \Barryvdh\DomPDF\PDF
+     */
     protected function writeInvoiceToFile($order)
     {
         $pdf = PDF::loadView('invoice-template', compact('order'));

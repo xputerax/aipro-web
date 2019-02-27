@@ -18,6 +18,8 @@ class ProductController extends Controller
      */
     public function index()
     {
+        Auth::user()->can('list-product') ?: abort(403);
+
         $products = Product::where('branch_id', Auth::user()->branch->id)
             ->latest()
             ->get();
@@ -32,6 +34,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-product') ?: abort(403);
+
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->orderBy('name', 'asc')
             ->get();
@@ -48,6 +52,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        Auth::user()->can('create-product') ?: abort(403);
+
         $data = $this->validateData($request);
         $data['branch_id'] = Auth::user()->branch->id;
 
@@ -66,6 +72,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        Auth::user()->can('view-product') ?: abort(403);
+
         return view('product.view', compact('product'));
     }
 
@@ -78,6 +86,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        Auth::user()->can('edit-product') ?: abort(403);
+
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->latest()
             ->get();
@@ -95,6 +105,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        Auth::user()->can('edit-product') ?: abort(403);
+
         $data = $this->validateData($request);
 
         if ($product->update($data)) {
@@ -117,6 +129,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        Auth::user()->can('delete-product') ?: abort(403);
     }
 
     public function addToCart(Request $request, Product $product)
@@ -147,6 +160,11 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
+    /**
+     * Returns the validation rules
+     *
+     * @return array
+     */
     protected function validationRules()
     {
         return [
@@ -182,6 +200,12 @@ class ProductController extends Controller
         ];
     }
 
+    /**
+     * Returns the validated form data
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     protected function validateData($request)
     {
         return $request->validate($this->validationRules());

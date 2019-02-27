@@ -47,8 +47,8 @@ class CartController extends Controller
         $order->checkout_at = $order->resolved_at = $order->delivered_at = $date;
         $order->save();
 
-        // Copy each cart item into order_products
         foreach ($cartItems as $cartItem) {
+            // Copy each cart item into order_products
             $orderProduct = new OrderProduct();
             $orderProduct->order_id = $order->id;
             $orderProduct->product_id = $cartItem->product_id;

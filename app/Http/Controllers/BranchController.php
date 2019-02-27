@@ -14,7 +14,11 @@ class BranchController extends Controller
      */
     public function index()
     {
-        return view('branch.index');
+        Auth::user()->can('list-branch') ?: abort(403);
+
+        $branches = Branch::latest()->get();
+
+        return view('branch.index', compact('branches'));
     }
 
     /**
@@ -24,6 +28,8 @@ class BranchController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-branch') ?: abort(403);
+
         return view('branch.form');
     }
 
@@ -35,6 +41,8 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
+        Auth::user()->can('create-branch') ?: abort(403);
+
         $branch = new Branch($this->validateData($request));
         $branch->save();
 
@@ -49,6 +57,8 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
+        Auth::user()->can('view-branch') ?: abort(403);
+
         return view('branch.view', compact('branch'));
     }
 
@@ -60,6 +70,8 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
+        Auth::user()->can('edit-branch') ?: abort(403);
+
         return view('branch.form', compact('branch'));
     }
 
@@ -72,6 +84,8 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
+        Auth::user()->can('edit-branch') ?: abort(403);
+
         $data = $this->validateData($request);
         $branch->update($data);
 
@@ -86,9 +100,14 @@ class BranchController extends Controller
      */
     public function destroy(Branch $branch)
     {
-        abort(403);
+        Auth::user()->can('delete-branch') ?: abort(403);
     }
 
+    /**
+     * Returns the form validation rules
+     *
+     * @return array
+     */
     protected function validationRules()
     {
         return [
@@ -114,6 +133,12 @@ class BranchController extends Controller
         ];
     }
 
+    /**
+     * Returns the validated form data
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     protected function validateData($request)
     {
         return $request->validate($this->validationRules());

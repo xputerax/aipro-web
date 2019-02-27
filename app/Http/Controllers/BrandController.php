@@ -15,6 +15,8 @@ class BrandController extends Controller
      */
     public function index()
     {
+        Auth::user()->can('list-brand', Brand::class) ?: abort(403);
+
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
                 ->latest()
                 ->get();
@@ -29,6 +31,8 @@ class BrandController extends Controller
      */
     public function create()
     {
+        Auth::user()->can('create-brand', Brand::class) ?: abort(403);
+
         return view('brand.form');
     }
 
@@ -41,6 +45,8 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        Auth::user()->can('create-brand', Brand::class) ?: abort(403);
+
         $data = $this->validateData($request);
         $data['branch_id'] = Auth::user()->branch->id;
         $brand = new Brand($data);
@@ -58,6 +64,8 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
+        Auth::user()->can('view-brand', Brand::class) ?: abort(403);
+
         return view('brand.view', compact('brand'));
     }
 
@@ -70,6 +78,8 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
+        Auth::user()->can('edit-brand', Brand::class) ?: abort(403);
+
         return view('brand.form', compact('brand'));
     }
 
@@ -83,6 +93,8 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
+        Auth::user()->can('edit-brand', Brand::class) ?: abort(403);
+
         $data = $this->validateData($request);
         $brand->update($data);
 
@@ -98,6 +110,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        Auth::user()->can('delete-brand', Brand::class) ?: abort(403);
     }
 
     protected function validationRules()
