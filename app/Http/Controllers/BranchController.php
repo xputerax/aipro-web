@@ -84,7 +84,7 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
-        Auth::user()->can('edit-branch') ?: abort(403);
+        Auth::user()->can('edit-branch', $branch) ?: abort(403);
 
         $data = $this->validateData($request);
         $branch->update($data);
@@ -100,7 +100,7 @@ class BranchController extends Controller
      */
     public function destroy(Branch $branch)
     {
-        Auth::user()->can('delete-branch') ?: abort(403);
+        Auth::user()->can('delete-branch', $branch) ?: abort(403);
     }
 
     /**
