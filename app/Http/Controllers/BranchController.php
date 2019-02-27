@@ -15,7 +15,7 @@ class BranchController extends Controller
      */
     public function index()
     {
-        Auth::user()->can('list-branch') ?: abort(403);
+        Auth::user()->can('list-branch', Branch::class) ?: abort(403);
 
         $branches = Branch::latest()->get();
 
@@ -29,7 +29,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-        Auth::user()->can('create-branch') ?: abort(403);
+        Auth::user()->can('create-branch', Branch::class) ?: abort(403);
 
         return view('branch.form');
     }
@@ -42,10 +42,9 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        Auth::user()->can('create-branch') ?: abort(403);
+        Auth::user()->can('create-branch', Branch::class) ?: abort(403);
 
-        $branch = new Branch($this->validateData($request));
-        $branch->save();
+        Branch::create($this->validateData($request));
 
         return redirect()->route('branches.index');
     }
@@ -58,7 +57,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        Auth::user()->can('view-branch') ?: abort(403);
+        Auth::user()->can('view-branch', $branch) ?: abort(403);
 
         return view('branch.view', compact('branch'));
     }
@@ -71,7 +70,7 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
-        Auth::user()->can('edit-branch') ?: abort(403);
+        Auth::user()->can('edit-branch', $branch) ?: abort(403);
 
         return view('branch.form', compact('branch'));
     }

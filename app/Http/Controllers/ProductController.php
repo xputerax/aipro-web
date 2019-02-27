@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        Auth::user()->can('list-product') ?: abort(403);
+        Auth::user()->can('list-product', Product::class) ?: abort(403);
 
         $products = Product::where('branch_id', Auth::user()->branch->id)
             ->latest()
@@ -34,7 +34,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        Auth::user()->can('create-product') ?: abort(403);
+        Auth::user()->can('create-product', Product::class) ?: abort(403);
 
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->orderBy('name', 'asc')
@@ -52,13 +52,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Auth::user()->can('create-product') ?: abort(403);
+        Auth::user()->can('create-product', Product::class) ?: abort(403);
 
         $data = $this->validateData($request);
         $data['branch_id'] = Auth::user()->branch->id;
 
-        $product = new Product($data);
-        $product->save();
+        Product::create($data);
 
         return redirect()->route('products.index');
     }
@@ -72,7 +71,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        Auth::user()->can('view-product') ?: abort(403);
+        Auth::user()->can('view-product', $product) ?: abort(403);
 
         return view('product.view', compact('product'));
     }
@@ -86,7 +85,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        Auth::user()->can('edit-product') ?: abort(403);
+        Auth::user()->can('edit-product', $product) ?: abort(403);
 
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->latest()
@@ -105,7 +104,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        Auth::user()->can('edit-product') ?: abort(403);
+        Auth::user()->can('edit-product', $product) ?: abort(403);
 
         $data = $this->validateData($request);
 
@@ -129,7 +128,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Auth::user()->can('delete-product') ?: abort(403);
+        Auth::user()->can('delete-product', $product) ?: abort(403);
     }
 
     public function addToCart(Request $request, Product $product)

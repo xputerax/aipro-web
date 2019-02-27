@@ -49,8 +49,8 @@ class BrandController extends Controller
 
         $data = $this->validateData($request);
         $data['branch_id'] = Auth::user()->branch->id;
-        $brand = new Brand($data);
-        $brand->save();
+
+        Brand::create($data);
 
         return redirect()->route('brands.index');
     }
@@ -64,7 +64,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        Auth::user()->can('view-brand', Brand::class) ?: abort(403);
+        Auth::user()->can('view-brand', $brand) ?: abort(403);
 
         return view('brand.view', compact('brand'));
     }
@@ -78,7 +78,7 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        Auth::user()->can('edit-brand', Brand::class) ?: abort(403);
+        Auth::user()->can('edit-brand', $brand) ?: abort(403);
 
         return view('brand.form', compact('brand'));
     }
@@ -93,7 +93,7 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        Auth::user()->can('edit-brand', Brand::class) ?: abort(403);
+        Auth::user()->can('edit-brand', $brand) ?: abort(403);
 
         $data = $this->validateData($request);
         $brand->update($data);
@@ -110,7 +110,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        Auth::user()->can('delete-brand', Brand::class) ?: abort(403);
+        Auth::user()->can('delete-brand', $brand) ?: abort(403);
     }
 
     protected function validationRules()

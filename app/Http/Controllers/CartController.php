@@ -14,11 +14,22 @@ class CartController extends Controller
     const ORDER_STATUS_RESOLVED = 'resolved';
     const ORDER_STATUS_DELIVERED = 'delivered';
 
+    /**
+     * Show the customer cart page
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         return view('cart.index');
     }
 
+    /**
+     * Show the customer cart page
+     *
+     * @param \App\Customer $customer
+     * @return \Illuminate\Http\Response
+     */
     public function viewCartByCustomer(Customer $customer)
     {
         return view('cart.view-by-customer', compact('customer'));

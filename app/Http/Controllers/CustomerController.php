@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        Auth::user()->can('list-customer') ?: abort(403);
+        Auth::user()->can('list-customer', Customer::class) ?: abort(403);
 
         $customers = Customer::where('branch_id', Auth::user()->branch->id)
             ->latest()
@@ -33,7 +33,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        Auth::user()->can('create-customer') ?: abort(403);
+        Auth::user()->can('create-customer', Customer::class) ?: abort(403);
 
         return view('customer.form');
     }
@@ -49,7 +49,7 @@ class CustomerController extends Controller
     {
         $user = Auth::user();
 
-        $user->can('create-customer') ?: abort(403);
+        $user->can('create-customer', Customer::class) ?: abort(403);
 
         $validated_data = $this->validateData($request);
         $branch = $user->branch;
@@ -79,7 +79,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        Auth::user()->can('view-customer') ?: abort(403);
+        Auth::user()->can('view-customer', $customer) ?: abort(403);
 
         return view('customer.view', compact('customer'));
     }
@@ -93,7 +93,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        Auth::user()->can('edit-customer') ?: abort(403);
+        Auth::user()->can('edit-customer', $customer) ?: abort(403);
 
         return view('customer.form', compact('customer'));
     }
@@ -108,7 +108,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        Auth::user()->can('edit-customer') ?: abort(403);
+        Auth::user()->can('edit-customer', $customer) ?: abort(403);
 
         $validated_data = $this->validateData($request);
         $customer->update($validated_data);
@@ -126,7 +126,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        Auth::user()->can('delete-customer') ?: abort(403);
+        Auth::user()->can('delete-customer', $customer) ?: abort(403);
 
         $customer->delete();
 
@@ -143,7 +143,7 @@ class CustomerController extends Controller
      */
     public function select(Request $request, Customer $customer)
     {
-        Auth::user()->can('select-customer') ?: abort(403);
+        Auth::user()->can('select-customer', $customer) ?: abort(403);
 
         $request->session()->put('customer', clone $customer);
 
@@ -157,7 +157,7 @@ class CustomerController extends Controller
      */
     public function deselect()
     {
-        Auth::user()->can('select-customer') ?: abort(403);
+        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
 
         return view('customer.deselect');
     }
@@ -169,7 +169,7 @@ class CustomerController extends Controller
      */
     public function selected()
     {
-        Auth::user()->can('select-customer') ?: abort(403);
+        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
 
         return view('customer.selected');
     }

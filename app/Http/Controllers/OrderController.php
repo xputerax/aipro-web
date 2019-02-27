@@ -18,7 +18,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        Auth::user()->can('list-order') ?: abort(403);
+        Auth::user()->can('list-order', Order::class) ?: abort(403);
 
         $orders = Order::where('branch_id', Auth::user()->branch->id)
             ->latest()
@@ -34,7 +34,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        Auth::user()->can('create-order') ?: abort(403);
+        Auth::user()->can('create-order', Order::class) ?: abort(403);
 
         return view('order.create');
     }
@@ -48,7 +48,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        Auth::user()->can('create-order') ?: abort(403);
+        Auth::user()->can('create-order', Order::class) ?: abort(403);
     }
 
     /**
@@ -60,7 +60,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        Auth::user()->can('view-order') ?: abort(403);
+        Auth::user()->can('view-order', $order) ?: abort(403);
 
         return view('order.view', compact('order'));
     }
@@ -74,7 +74,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        Auth::user()->can('edit-order') ?: abort(403);
+        Auth::user()->can('edit-order', $order) ?: abort(403);
     }
 
     /**
@@ -87,7 +87,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        Auth::user()->can('edit-order') ?: abort(403);
+        Auth::user()->can('edit-order', $order) ?: abort(403);
     }
 
     /**
@@ -99,7 +99,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        Auth::user()->can('delete-order') ?: abort(403);
+        Auth::user()->can('delete-order', $order) ?: abort(403);
     }
 
     /**
