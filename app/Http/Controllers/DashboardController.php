@@ -13,6 +13,11 @@ class DashboardController extends Controller
         $this->request = $request;
     }
 
+    /**
+     * Shows the dashboard
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         return view('dashboard');
