@@ -16,11 +16,21 @@ class ProfileController extends Controller
         $this->request = $request;
     }
 
+    /**
+     * Show the edit profile form
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function editProfile()
     {
         return view('user.profile');
     }
 
+    /**
+     * Save the user profile
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function saveProfile()
     {
         $validated_data = $this->validatedRequest();
@@ -39,6 +49,11 @@ class ProfileController extends Controller
         return redirect('profile')->with('message', 'Profile updated');
     }
 
+    /**
+     * Returns the form validation rules
+     *
+     * @return array
+     */
     protected function validationRules()
     {
         return [
@@ -68,6 +83,11 @@ class ProfileController extends Controller
         ];
     }
 
+    /**
+     * Creates and returns the form validator instance
+     *
+     * @return \Illuminate\Validation\Validator
+     */
     protected function makeValidator()
     {
         $validator = Validator::make($this->request->all(), $this->validationRules());
@@ -78,6 +98,11 @@ class ProfileController extends Controller
         return $validator;
     }
 
+    /**
+     * Returns the validated form data
+     *
+     * @return array
+     */
     protected function validatedRequest()
     {
         return $this->makeValidator()->validate();
