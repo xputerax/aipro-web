@@ -19,6 +19,11 @@ class Order extends Model
         'checkout_at', 'resolved_at', 'delivery_at', 'created_at', 'updated_at'
     ];
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+    
     public function customer()
     {
         return $this->belongsTo(Customer::class);
