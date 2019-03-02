@@ -38,23 +38,21 @@
                     <td>{{ $product->stock }}</td>
                     @if(session('customer'))
                     <td>
-                        <form action="{{ route('products.addToCart', compact('product')) }}" class="form-inline" method="post">
+                        <form action="{{ route('carts.addToCart', compact('product')) }}" class="form-inline" method="post">
                             @csrf
-                            {{-- <div class="container"> --}}
+                            <div class="container">
                                 <div class="row">
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
-                                        <input type="text" name="price" value="{{ $product->min_price }}" class="form-control">
-                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <label for="price">Price</label>
+                                        <input type="text" name="price" value="{{ $product->min_price }}" style="width: 20%;" class="form-control">
 
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
-                                        <input type="text" name="quantity" value="1" class="form-control">
-                                    </div>
+                                        <label for="quantity">Quantity</label>
+                                        <input type="text" name="quantity" value="1" style="width: 20%;" class="form-control">
 
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
-                                        {{-- <input type="submit" value="Add to Cart" class="btn btn-primary"> --}}
+                                        <input type="submit" value="Add to Cart" class="btn btn-primary">
                                     </div>
                                 </div>
-                            {{-- </div> --}}
+                            </div>
                         </form>
                     </td>
                     @endif
@@ -69,6 +67,21 @@
         </table>
     </div>
 </div>
+
+@if(session('message'))
+<div class="alert alert-info">
+    {{ session('message') }}
+</div>
+@endif
+
+@if($errors->any())
+    @foreach($errors->all() as $error)
+    <div class="alert alert-danger">
+        {{ $error }}
+    </div>
+    @endforeach
+@endif
+
 @endsection
 
 @section('scripts')
