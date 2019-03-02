@@ -7,13 +7,12 @@ use App\Order;
 use App\OrderProduct;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Cart;
+use Illuminate\Http\Request;
+use App\Product;
 
 class CartController extends Controller
 {
-    const ORDER_STATUS_PENDING = 'pending';
-    const ORDER_STATUS_RESOLVED = 'resolved';
-    const ORDER_STATUS_DELIVERED = 'delivered';
-
     /**
      * Show the customer cart page
      *
@@ -35,42 +34,55 @@ class CartController extends Controller
         return view('cart.view-by-customer', compact('customer'));
     }
 
-    public function checkout(Customer $customer)
+    public function addToCart(Request $request, Product $product)
     {
-        /**
-         * Get customer cart items.
-         */
-        $cartItems = $customer->carts;
+        $user = Auth::user();
+        $customer = session('customer');
 
-        $date = Carbon::now();
+        $data = $request->validate([
+            'price' => [
+                'required',
+                'numeric'
+            ],
+            'quantity' => [
+                'required',
+                'integer',
+                'lte:'.$product->stock,
+            ],
+        ]);
 
-        /**
-         * Create new order
-         * pls check.
-         */
-        $order = new Order();
-        $order->customer_id = $customer->id;
-        $order->checkout_user_id = $order->resolve_user_id = $order->delivery_user_id = Auth::user()->id;
-        // $order->resolve_user_id = null;
-        // $order->delivery_user_id = null;
-        $order->status = self::ORDER_STATUS_PENDING;
-        $order->deposit = '0.00';
-        $order->checkout_at = $order->resolved_at = $order->delivered_at = $date;
-        $order->save();
+        $cart = new Cart();
+        $cart->branch_id = $user->branch->id;
+        $cart->customer_id = $customer->id;
+        $cart->product_id = $product->id;
+        $cart->price = $data['price'];
+        $cart->quantity = $data['quantity'];
+        
+        $product->stock -= $data['quantity'];
 
-        foreach ($cartItems as $cartItem) {
-            // Copy each cart item into order_products
-            $orderProduct = new OrderProduct();
-            $orderProduct->order_id = $order->id;
-            $orderProduct->product_id = $cartItem->product_id;
-            $orderProduct->price = $cartItem->price;
-            $orderProduct->quantity = $cartItem->quantity;
-            $orderProduct->save();
-
-            // Delete the item from the cart
-            $cartItem->delete();
+        if($cart->save() && $product->save()){
+            $request->session()->flash('message', 'Item added to cart');
+        } else {
+            $request->session()->flash('message', 'Failed to add item to cart');
         }
 
-        return response('done');
+        return redirect()
+            ->route('products.index');
     }
+
+    public function removeFromCart(Request $request, Cart $cart)
+    {
+        $product = $cart->product;
+        $product->stock += $cart->quantity;
+
+        if($product->save() && $cart->delete()){
+            $request->session()->flash('message', 'Item removed from cart');
+        } else {
+            $request->session()->flash('message', 'Failed to remove item from cart');
+        }
+
+        return redirect()
+            ->route('products.index');
+    }
+
 }

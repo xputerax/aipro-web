@@ -131,34 +131,6 @@ class ProductController extends Controller
         Auth::user()->can('delete-product', $product) ?: abort(403);
     }
 
-    public function addToCart(Request $request, Product $product)
-    {
-        $quantity = $request->validate([
-            'quantity' => [
-                'required',
-                'integer',
-                'lte:'.$product->stock,
-            ],
-        ]);
-
-        $customer = session('customer');
-
-        DB::transaction(function () use ($customer, $product, $quantity) {
-            $cart = new Cart();
-            $cart->branch_id = $customer->branch->id;
-            $cart->customer_id = $customer->id;
-            $cart->product_id = $product->id;
-            $cart->price = $product->price;
-            $cart->quantity = $quantity;
-            $cart->save();
-
-            $product->stock -= $quantity;
-            $product->save();
-        });
-
-        return redirect()->route('products.index');
-    }
-
     /**
      * Returns the validation rules
      *
