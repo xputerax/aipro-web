@@ -11,35 +11,23 @@
             </tr>
         </thead>
 
-        <tbody></tbody>
+        <tbody>
+        @if($branches->count())
+            @foreach($branches as $branch)
+            <tr>
+                <td>
+                    <a href="{{ route('branches.show', compact('branch')) }}">
+                        {{ $branch->name }}
+                    </a>
+                </td>
+            </tr>
+            @endforeach
+        @else
+            <tr>
+                <td>No Data</td>
+            </tr>
+        @endif
+        </tbody>
     </table>
 </div>
-@endsection
-
-@section('scripts')
-@parent
-@include('datatables')
-
-<script>
-$(function() {
-
-    let table = $("#branches_table").DataTable({
-        serverSide: true,
-        ajax: "{{ url('api/branches') }}",
-        dataSrc: 'data',
-        columns: [
-            {
-                data: 'name',
-                render: function (data, type, row) {
-                    let url = `{{ url('branches') }}/${row.id}`;
-                    return `<a href="${url}">${data}</a>`;
-                }
-            }
-        ],
-        paging: true,
-
-    });
-
-});
-</script>
 @endsection
