@@ -57,7 +57,7 @@ class CartController extends Controller
         $cart->product_id = $product->id;
         $cart->price = $data['price'];
         $cart->quantity = $data['quantity'];
-        
+
         $product->stock -= $data['quantity'];
 
         if($cart->save() && $product->save()){
@@ -68,6 +68,35 @@ class CartController extends Controller
 
         return redirect()
             ->route('products.index');
+    }
+
+    public function modifyCart(Request $request, Cart $cart)
+    {
+        $data = $request->validate([
+            'newQuantity' => [
+                'required',
+                'integer',
+                'lte:'.$cart->product->stock
+            ]
+        ]);
+
+        if($data['newQuantity'] === "0"){
+            $this->removeFromCart($request, $cart);
+        } else {
+            $quantity_difference = $cart->quantity - $data['newQuantity'];
+
+            $product = $cart->product;
+            $product->stock += $quantity_difference;
+            $product->save();
+
+            $cart->quantity = $data['newQuantity'];
+            $cart->save();
+        }
+
+        return redirect()
+            ->route('carts.viewByCustomer', [
+                'customer' => $cart->customer
+            ]);
     }
 
     public function removeFromCart(Request $request, Cart $cart)
