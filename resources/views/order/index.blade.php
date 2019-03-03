@@ -14,6 +14,7 @@
                 <th>Customer</th>
                 <th>Status</th>
                 <th>Date</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -28,6 +29,9 @@
                 </td>
                 <td>{{ $order->status }}</td>
                 <td>{{ $order->created_at }}</td>
+                <td>
+                    <a href="{{ route('orders.edit', compact('order')) }}" class="btn btn-primary">Edit</a>
+                </td>
             </tr>
             @endforeach
         @else
