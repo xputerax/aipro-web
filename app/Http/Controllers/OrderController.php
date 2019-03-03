@@ -75,6 +75,8 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         Auth::user()->can('edit-order', $order) ?: abort(403);
+
+        return view('order.edit', compact('order'));
     }
 
     /**
@@ -88,6 +90,21 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         Auth::user()->can('edit-order', $order) ?: abort(403);
+
+        $data = $request->validate([
+            'status' => [
+                'required',
+                'in:pending,resolved,delivered'
+            ],
+            'deposit' => [
+                'required'
+            ]
+        ]);
+
+        $order->update($data);
+
+        return redirect()
+            ->route('orders.edit', compact('order'));
     }
 
     /**
