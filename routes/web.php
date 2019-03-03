@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('orders/{order}/generate_receipt', 'OrderController@generateReceipt')->name('orders.generateReceipt');
 
+    Route::put('carts/{cart}/modify', 'CartController@modifyCart')->name('carts.modify');
+
     Route::get('carts/{customer}', 'CartController@viewCartByCustomer')->name('carts.viewByCustomer');
     
     Route::post('products/{product}/add_to_cart', 'CartController@addToCart')->name('carts.addToCart');
