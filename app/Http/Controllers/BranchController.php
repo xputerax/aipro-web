@@ -17,7 +17,7 @@ class BranchController extends Controller
     {
         Auth::user()->can('list-branch', Branch::class) ?: abort(403);
 
-        $branches = Branch::latest()->get();
+        $branches = Branch::orderBy('id', 'asc')->get();
 
         return view('branch.index', compact('branches'));
     }
@@ -89,7 +89,9 @@ class BranchController extends Controller
         $data = $this->validateData($request);
         $branch->update($data);
 
-        return redirect()->route('branches.edit', compact('branch'))->with('message', 'Branch updated successfully');
+        return redirect()
+            ->route('branches.edit', compact('branch'))
+            ->with('message', 'Branch updated successfully');
     }
 
     /**
