@@ -109,10 +109,23 @@
                         $price_sum = sprintf("%.2f", $price_sum);
                     @endphp
 
+
                         <tr>
-                            <td colspan="2"></td>
+                            <td colspan="2" class="border-top-0"></td>
+                            <td style="border-top: 2px solid black;">Subtotal:</td>
+                            <td class="text-right" style="border-top: 2px solid black;">{{ $price_sum }}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" class="border-top-0"></td>
+                            <td>Deposit:</td>
+                            <td class="text-right">- {{ $order->deposit }}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" class="border-top-0"></td>
                             <td>Total:</td>
-                            <td class="text-right">{{ $price_sum }}</td>
+                            <td class="text-right">{{ sprintf("%.2f", $price_sum - $order->deposit) }}</td>
                         </tr>
                     </tbody>
                 </table>
