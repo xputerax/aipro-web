@@ -15,15 +15,24 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Auth::user()->can('list-customer', Customer::class) ?: abort(403);
 
-        $customers = Customer::where('branch_id', Auth::user()->branch->id)
+        $customers = Customer::where('branch_id', Auth::user()->branch->id);
+
+        if($request->has('full_name')) {
+            $full_name = $request->full_name;
+            $customers = $customers->where('full_name', 'like', '%' . $full_name . '%');
+        }
+
+        $customers = $customers
             ->latest()
             ->paginate(self::CUSTOMERS_PER_PAGE);
 
-        return view('customer.index', compact('customers'));
+        // dd($customers);
+
+        return view('customer.index', compact('customers', 'request'));
     }
 
     /**

@@ -13,6 +13,22 @@
 
 @section('content-1')
 {{-- <div class="x_panel"> --}}
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <form action="{{ route('customers.index') }}" method="get">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="full_name" class="form-control" 
+                            placeholder="Customer Name" value="{{ $request->full_name ?? '' }}">
+                        <span class="input-group-btn">
+                            <input type="submit" class="btn btn-primary" value="Search">
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <table class="table table-bordered table-striped" id="customers_table">
         <thead>
             <tr>
@@ -39,9 +55,6 @@
                 </td>
             </tr>
         @endforeach
-
-        {{ $customers->links() }}
-
         @else
             <tr>
                 <td colspan="4">No data</td>
@@ -51,7 +64,7 @@
     </table>
 
     <div>
-
+        {{ $customers->links() }}
     </div>
 {{-- </div> --}}
 @endsection
