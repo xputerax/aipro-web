@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class BranchController extends Controller
 {
+    const BRANCHES_PER_PAGE = 15;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +25,7 @@ class BranchController extends Controller
             $branches = $branches->where('name', 'like', '%' . $request->name . '%');
         }
 
-        $branches = $branches->get();
+        $branches = $branches->paginate(self::BRANCHES_PER_PAGE);
 
         return view('branch.index', compact('branches', 'request'));
     }
