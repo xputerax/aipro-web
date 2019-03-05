@@ -10,20 +10,29 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    const USERS_PER_PAGE = 15;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Auth::user()->can('list-user', User::class) ?: abort(403);
 
-        $users = User::where('branch_id', Auth::user()->branch->id)
-            ->withTrashed()
-            ->get();
+        if(Auth::user()->can('search-users-across-branches')) {
+            $users = new User();
+        } else {
+            $users = User::where('branch_id', Auth::user()->branch->id);
+        }
 
-        return view('user.index', compact('users'));
+        if($request->has('name')) {
+            $users = $users->where('full_name', 'like', '%' . $request->name . '%');
+        }
+
+        $users = $users->withTrashed()->paginate(self::USERS_PER_PAGE);
+
+        return view('user.index', compact('users', 'request'));
     }
 
     /**
