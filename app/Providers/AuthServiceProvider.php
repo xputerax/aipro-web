@@ -184,5 +184,9 @@ class AuthServiceProvider extends ServiceProvider
                 && $currentUser->branch->id === $user->branch->id;
         });
 
+        Gate::define('search-users-across-branches', function($user) {
+            return $user->group_id === self::AIPRO_CEO_GROUP_ID;
+        });
+
     }
 }
