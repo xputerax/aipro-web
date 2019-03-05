@@ -13,13 +13,19 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Auth::user()->can('list-branch', Branch::class) ?: abort(403);
 
-        $branches = Branch::orderBy('id', 'asc')->get();
+        $branches = Branch::orderBy('id', 'asc');
 
-        return view('branch.index', compact('branches'));
+        if($request->has('name')) {
+            $branches = $branches->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $branches = $branches->get();
+
+        return view('branch.index', compact('branches', 'request'));
     }
 
     /**
