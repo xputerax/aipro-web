@@ -12,7 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', 'ProfileController@editProfile')->name('profile');
 
     Route::put('profile', 'ProfileController@saveProfile');
-    
+
     Route::get('customers/selected', 'CustomerController@selected')->name('customers.selected');
     Route::get('customers/deselect', 'CustomerController@deselect')->name('customers.deselect');
 
@@ -32,11 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::put('carts/{cart}/modify', 'CartController@modifyCart')->name('carts.modify');
 
     Route::get('carts/{customer}', 'CartController@viewCartByCustomer')->name('carts.viewByCustomer');
-    
+
     Route::post('products/{product}/add_to_cart', 'CartController@addToCart')->name('carts.addToCart');
 
     Route::get('checkout/{customer}', 'CheckoutController@checkout')->name('checkout');
 
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+    Route::post('payments/create/{order}', 'PaymentController@create')->name('payments.create');
 
 });
