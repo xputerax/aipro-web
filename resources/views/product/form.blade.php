@@ -105,6 +105,19 @@
         </div>
         <!-- end stock section -->
 
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Type">
+                Type <span class="required">*</span>
+            </label>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <select name="type" class="form-control">
+                    <option value="product" {{ isset($product) && $product->type == 'product' ? 'selected' : '' }}>Product</option>
+                    <option value="service" {{ isset($product) && $product->type == 'service' ? 'selected' : '' }}>Service</option>
+                </select>
+            </div>
+        </div>
+
         <!-- start button section-->
         <div class="form-group">
             <div class="col-md-offset-3 col-sm-offset-3 col-md-6 col-sm-6 col-xs-12">

@@ -17,6 +17,7 @@
                     <th>Min. Price</th>
                     <th>Max. Price</th>
                     <th>Stock</th>
+                    <th>Type</th>
                     @if(session('customer'))
                     <th>Action</th>
                     @endif
@@ -36,6 +37,7 @@
                     <td>{{ $product->min_price }}</td>
                     <td>{{ $product->max_price }}</td>
                     <td>{{ $product->stock }}</td>
+                    <td>{{ $product->type }}</td>
                     @if(session('customer'))
                     <td>
                         <form action="{{ route('carts.addToCart', compact('product')) }}" class="form-inline" method="post">

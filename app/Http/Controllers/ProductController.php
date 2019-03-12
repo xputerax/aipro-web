@@ -168,6 +168,10 @@ class ProductController extends Controller
                 'required',
                 'integer',
             ],
+            'type' => [
+                'required',
+                'in:product,service'
+            ]
         ];
     }
 
