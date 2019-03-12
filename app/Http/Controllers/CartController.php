@@ -58,7 +58,9 @@ class CartController extends Controller
         $cart->price = $data['price'];
         $cart->quantity = $data['quantity'];
 
-        $product->stock -= $data['quantity'];
+        if($product->type === "product"){
+            $product->stock -= $data['quantity'];
+        }
 
         if($cart->save() && $product->save()){
             $request->session()->flash('message', 'Item added to cart');
@@ -86,8 +88,11 @@ class CartController extends Controller
             $quantity_difference = $cart->quantity - $data['newQuantity'];
 
             $product = $cart->product;
-            $product->stock += $quantity_difference;
-            $product->save();
+
+            if($product->type === "product"){
+                $product->stock += $quantity_difference;
+                $product->save();
+            }
 
             $cart->quantity = $data['newQuantity'];
             $cart->save();
@@ -102,7 +107,10 @@ class CartController extends Controller
     public function removeFromCart(Request $request, Cart $cart)
     {
         $product = $cart->product;
-        $product->stock += $cart->quantity;
+
+        if($product->type === "product"){
+            $product->stock += $cart->quantity;
+        }
 
         if($product->save() && $cart->delete()){
             $request->session()->flash('message', 'Item removed from cart');
