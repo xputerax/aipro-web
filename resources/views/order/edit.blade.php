@@ -89,4 +89,29 @@ Editing Order #{{ $order->id }}
         </div>
     </form>
 </div>
+
+<h3>Add Payment</h3>
+
+<div class="x_panel">
+    <div class="x_content">
+        <form action="{{ route('payments.create', compact('order')) }}" method="post" class="form-horizontal form-label-left">
+            @csrf
+
+            <div class="form-group">
+                <label for="amount" class="control-label">Amount</label>
+                <input type="text" name="amount" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="deposit" class="control-label">Deposit?</label>
+                <select name="deposit" class="form-control">
+                    <option value="0">no</option>
+                    <option value="1">yes</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Add Payment" class="btn btn-primary">
+        </form>
+    </div>
+</div>
 @endsection

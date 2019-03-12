@@ -27,7 +27,7 @@ class Order extends Model
     {
         return $this->belongsTo(Branch::class);
     }
-    
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -76,5 +76,10 @@ class Order extends Model
     public function invoice()
     {
         return $this->hasOne(Invoice::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
