@@ -12,7 +12,8 @@ class Order extends Model
         'resolve_user_id' => null,
         'delivery_user_id' => null,
         'resolved_at' => null,
-        'delivered_at' => null
+        'delivered_at' => null,
+        'deposit' => '0.00'
     ];
 
     protected $dates = [
