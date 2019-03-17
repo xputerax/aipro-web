@@ -46,32 +46,6 @@
                     </tbody>
                 </table>
             </div> <!-- end column -->
-
-            <div class="col-md-6">
-                <table class="table table-sm table-bordered">
-                    <tbody>
-                        <tr>
-                            <th class="text-right" scope="row" style="width: 20%;">Jenama</th>
-                            <td>test</td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-right" scope="row">Model</th>
-                            <td>test</td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-right" scope="row">Warna</th>
-                            <td>test</td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-right" scope="row">IMEI</th>
-                            <td>test</td>
-                        </tr>                        
-                    </tbody>
-                </table>
-            </div> <!-- end column -->
         </div> <!-- end row -->
 
         <div class="row">
@@ -80,6 +54,7 @@
                     <thead>
                         <tr>
                             <th>Product Name</th>
+                            <th>Description</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th class="text-right">Total</th>
@@ -99,6 +74,7 @@
 
                         <tr>
                             <td>{{ $order_product->product->name }}</td>
+                            <td>{{ $order_product->description ?? '-' }}</td>
                             <td>{{ $order_product->price }}</td>
                             <td>{{ $order_product->quantity }}</td>
                             <td class="text-right">{{ $total_price }}</td>
@@ -111,19 +87,19 @@
 
 
                         <tr>
-                            <td colspan="2" class="border-top-0"></td>
+                            <td colspan="3" class="border-top-0"></td>
                             <td style="border-top: 2px solid black;">Subtotal:</td>
                             <td class="text-right" style="border-top: 2px solid black;">{{ $price_sum }}</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2" class="border-top-0"></td>
+                            <td colspan="3" class="border-top-0"></td>
                             <td>Deposit:</td>
                             <td class="text-right">- {{ $order->deposit }}</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2" class="border-top-0"></td>
+                            <td colspan="3" class="border-top-0"></td>
                             <td>Total:</td>
                             <td class="text-right">{{ sprintf("%.2f", $price_sum - $order->deposit) }}</td>
                         </tr>
