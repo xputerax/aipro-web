@@ -12,8 +12,12 @@
         <table class="table table-bordered table-striped" id="brand_table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Description</th>
+                    @can('get-brands-all-branches')
+                    <th>Branch</th>
+                    @endcan
                 </tr>
             </thead>
 
@@ -21,10 +25,14 @@
             @if($brands->count())
             @foreach($brands as $brand)
                 <tr>
+                    <td>{{ $brand->id }}</td>
                     <td>
                         <a href="{{ route('brands.show', compact('brand')) }}">{{ $brand->name }}</a>
                     </td>
                     <td>{{ $brand->description ?? '-' }}</td>   
+                    @can('get-brands-all-branches')
+                    <td>{{ $brand->branch->name }}</td>
+                    @endcan
                 </tr>    
             @endforeach
             @else
