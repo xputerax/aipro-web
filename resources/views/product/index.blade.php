@@ -62,7 +62,7 @@
             @endforeach
             @else
                 <tr>
-                    <td colspan="5">No data</td>
+                    <td colspan="7">No data</td>
                 </tr>
             @endif
             </tbody>
