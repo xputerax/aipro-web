@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use App\Product;
 
 class BrandController extends Controller
 {
@@ -81,7 +82,9 @@ class BrandController extends Controller
     {
         Auth::user()->can('view-brand', $brand) ?: abort(403);
 
-        return view('brand.view', compact('brand'));
+        $products = Product::where('brand_id', $brand->id)->get();
+
+        return view('brand.view', compact('brand', 'products'));
     }
 
     /**

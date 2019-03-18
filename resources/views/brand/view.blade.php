@@ -4,14 +4,33 @@
 Viewing Brand {{ $brand->name }}
 @endsection
 
-@php
-    $parse_body_tag = false;
-@endphp
-
 @section('content-1')
-<div class="x_panel">
-    <div class="x_content">
-    
-    </div>
-</div>
+<h4>Products</h4>
+<table class="table table-bordered" id="products_table">
+    <thead>
+        <th>Name</th>
+        <th>Min. Price</th>
+        <th>Max. Price</th>
+        <th>Stock</th>
+        <th>Type</th>
+    </thead>
+
+    <tbody>
+    @if($products->count())
+    @foreach($products as $product)
+        <tr>
+            <td>{{ $product->name }}</td>
+            <td>{{ $product->min_price }}</td>
+            <td>{{ $product->max_price }}</td>
+            <td>{{ $product->stock }}</td>
+            <td>{{ $product->type }}</td>
+        </tr>
+    @endforeach
+    @else
+        <tr>
+            <td colspan="5">No data</td>
+        </tr>
+    @endif
+    </tbody>
+</table>
 @endsection
