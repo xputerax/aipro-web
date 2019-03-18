@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
 {
@@ -47,10 +49,19 @@ class BrandController extends Controller
     {
         Auth::user()->can('create-brand', Brand::class) ?: abort(403);
 
-        $data = $this->validateData($request);
-        $data['branch_id'] = Auth::user()->branch->id;
+        $validator = Validator::make(
+            array_merge($request->all(), ['branch_id' => Auth::user()->branch_id]),
+            array_merge($this->validationRules(), ['branch_id' => ['required']]),
+            ['name.unique_with' => 'Brand name already exist in the current branch']
+        );
 
-        Brand::create($data);
+        $data = $validator->validate();
+
+        try {
+            Brand::create($data);
+        } catch (QueryException $e) {
+            report($e);
+        }
 
         return redirect()->route('brands.index');
     }
@@ -120,6 +131,7 @@ class BrandController extends Controller
                 'required',
                 'max:100',
                 'alpha_dash',
+                'unique_with:brands,name,branch_id'
             ],
 
             'description' => [
