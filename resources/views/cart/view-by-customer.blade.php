@@ -39,6 +39,7 @@ Viewing Customer Cart: {{ $customer->full_name }}
                                 {{ $cart->product->name }}
                                 </a>
                             </td>
+
                             <td>
                                 <a href="#" id="cart_{{ $cart->id }}_link" class="show">
                                     {{ $cart->quantity }}
@@ -48,13 +49,15 @@ Viewing Customer Cart: {{ $customer->full_name }}
                                         @csrf
                                         @method('PUT')
 
-                                        <input type="text" name="newQuantity" class="form-control" value="{{ $cart->quantity }}" style="width: 20%">
+                                        <input type="text" name="quantity" class="form-control" value="{{ $cart->quantity }}" style="width: 20%">
                                         <input type="submit" value="Save" class="btn btn-primary">
                                         <a href="#" id="cart_{{ $cart->id }}_cancel" class="btn btn-danger">Cancel</a>
                                     </form>
                                 </div>
                             </td>
+
                             <td>{{ $cart->price }}</td>
+
                             <td>{{ $cart->total_price }}</td>
                         </tr>
                         @endforeach

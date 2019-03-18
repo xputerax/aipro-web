@@ -75,17 +75,17 @@ class CartController extends Controller
     public function modifyCart(Request $request, Cart $cart)
     {
         $data = $request->validate([
-            'newQuantity' => [
+            'quantity' => [
                 'required',
                 'integer',
                 'lte:'.$cart->product->stock
             ]
         ]);
 
-        if($data['newQuantity'] === "0"){
+        if($data['quantity'] === "0"){
             $this->removeFromCart($request, $cart);
         } else {
-            $quantity_difference = $cart->quantity - $data['newQuantity'];
+            $quantity_difference = $cart->quantity - $data['quantity'];
 
             $product = $cart->product;
 
@@ -94,7 +94,7 @@ class CartController extends Controller
                 $product->save();
             }
 
-            $cart->quantity = $data['newQuantity'];
+            $cart->quantity = $data['quantity'];
             $cart->save();
         }
 
