@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('orders/{order}/generate_receipt', 'OrderController@generateReceipt')->name('orders.generateReceipt');
 
-    Route::put('carts/{cart}/modify', 'CartController@modifyCart')->name('carts.modify');
+    Route::put('carts/{cart}/modifyQuantity', 'CartController@modifyQuantity')->name('carts.modifyQuantity');
 
     Route::get('carts/{customer}', 'CartController@viewCartByCustomer')->name('carts.viewByCustomer');
 
@@ -40,5 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::post('payments/create/{order}', 'PaymentController@create')->name('payments.create');
+
+    Route::put('carts/{cart}/modifyDescription', 'CartController@modifyDescription')->name('carts.modifyDescription');
 
 });
