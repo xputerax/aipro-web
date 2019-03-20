@@ -37,7 +37,7 @@
                 @if($users->count() > 0)
                 @foreach($users as $user)
                 <tr>
-                    <td><a href="{{ route('users.show', compact('user')) }}">{{ $user->full_name }}</a></td>
+                    <td><a href="{{ route('users.edit', compact('user')) }}">{{ $user->full_name }}</a></td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->group->name }}</td>
