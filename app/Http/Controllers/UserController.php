@@ -93,7 +93,10 @@ class UserController extends Controller
     {
         Auth::user()->can('edit-user', $user) ?: abort(403);
 
-        return view('user.form', compact('user'));
+        $groups = Group::all();
+        $branches = Branch::all();
+
+        return view('user.form', compact('user', 'groups', 'branches'));
     }
 
     /**
