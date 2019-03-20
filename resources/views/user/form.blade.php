@@ -9,13 +9,13 @@
 @endif
 
 @php
-    $parse_body_tag = false;    
+    $parse_body_tag = false;
 @endphp
 
 @section('content-1')
 <div class="x_panel">
     <div class="x_content">
-        
+
         @if(Route::currentRouteName() == "users.create")
         <form action="{{ route('users.store') }}" class="form-horizontal form-label-left" method="post">
         @elseif(Route::currentRouteName() == "users.edit")
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <!-- end full name section -->
-                
+
             <!-- start password section -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password</label>
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <!-- end password section -->
-            
+
             <!-- start group section -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="group">Group</label>
@@ -68,14 +68,14 @@
                     @if($groups->count())
                     <select name="group_id" id="group_select" class="form-control select2_single">
                         @foreach($groups as $group)
-                        <option value="{{ $group->id }}" {{ ($user->group_id === $group->id) ? 'selected' : '' }}>{{ $group->name }}</option>
+                        <option value="{{ $group->id }}" {{ (isset($user) && $user->group_id === $group->id) ? 'selected' : '' }}>{{ $group->name }}</option>
                         @endforeach
                     </select>
                     @endif
                 </div>
             </div>
             <!-- end group section -->
-            
+
             <!-- start branch section -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="branch_id">Branch</label>
@@ -83,14 +83,26 @@
                     @if($branches->count())
                     <select name="branch_id" id="branch_select" class="form-control select2_single">
                         @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}" {{ ($user->branch_id === $branch->id) ? 'selected' : '' }}>{{ $branch->name }}</option>
+                        <option value="{{ $branch->id }}" {{ (isset($user) && $user->branch_id === $branch->id) ? 'selected' : '' }}>{{ $branch->name }}</option>
                         @endforeach
                     </select>
                     @endif
                 </div>
             </div>
             <!-- end branch section -->
-            
+
+            <!-- start active/disabled section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <select name="status" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="disabled" {{ (isset($user->deleted_at)) ? 'selected' : '' }}>Disabled</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end active/disabled section -->
+
             <!-- start button section -->
             <div class="form-group">
                 <div class="col-md-offset-3 col-md-sm-3 col-xs-12 col-md-9 col-sm-9">
@@ -102,6 +114,12 @@
                 </div>
             </div>
             <!-- end button section -->
+
+            @if($errors->any())
+            @foreach($errors->all() as $error)
+            <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+            @endif
 
         </form>
     </div> <!-- end .x_content -->
