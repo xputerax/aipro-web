@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
         'brands' => 'BrandController'
     ]);
 
+    Route::bind('user', function ($id) {
+        return App\User::withTrashed()->findOrFail($id);
+    });
+
     Route::get('customers/{customer}/select', 'CustomerController@select')->name('customers.select');
 
     Route::get('orders/{order}/generate_receipt', 'OrderController@generateReceipt')->name('orders.generateReceipt');
