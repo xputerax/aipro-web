@@ -7,6 +7,8 @@ use App\Group;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -61,9 +63,17 @@ class UserController extends Controller
     {
         Auth::user()->can('create-user', User::class) ?: abort(403);
 
-        $data = $this->validateData($request);
+        $data = $this->validateData($request, null);
 
-        User::create($data);
+        if ('disabled' === $data['status']) {
+            $data['deleted_at'] = Carbon::now();
+        }
+
+        $user = User::create($data);
+
+        if($data['status'] === "disabled") {
+            $user->delete();
+        }
 
         return redirect()->route('users.index');
     }
@@ -110,6 +120,18 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         Auth::user()->can('edit-user', $user) ?: abort(403);
+
+        $data = $this->validateData($request, $user);
+
+        $user->update($data);
+
+        if($data['status'] === "active") {
+            $user->restore();
+        } else {
+            $user->delete();
+        }
+
+        return redirect()->route('users.edit', compact('user'));
     }
 
     /**
@@ -127,30 +149,28 @@ class UserController extends Controller
     /**
      * Returns the validation rules.
      *
+     * @param \App\User|null $user
      * @return array
      */
-    public function validationRules()
+    public function validationRules($user)
     {
-        return [
+        $rules = [
             'email' => [
                 'required',
                 'email',
                 'max:100',
-                'unique:users',
             ],
             'username' => [
                 'required',
                 'max:100',
-                'unique:users',
             ],
             'full_name' => [
                 'required',
                 'max:100',
             ],
             'password' => [
-                'required',
+                'sometimes',
                 'max:255',
-                'string',
             ],
             'group_id' => [
                 'required',
@@ -160,18 +180,43 @@ class UserController extends Controller
                 'required',
                 'exists:branches,id',
             ],
+            'status' => [
+                'required',
+                'in:active,disabled'
+            ]
         ];
+
+        if (isset($user)) {
+
+            $rules['email'][] = Rule::unique('users')->ignore($user->id);
+            $rules['username'][] = Rule::unique('users')->ignore($user->id);
+
+        } else {
+
+            $rules['email'][] = 'unique:users';
+            $rules['username'][] = 'unique:users';
+            $rules['password'][] = 'required';
+
+        }
+
+        return $rules;
     }
 
     /**
      * Validate the request.
      *
      * @param \Illuminate\Http\Request $request
+     * @param \App\User|null $user
      *
      * @return array
      */
-    public function validateData($request)
+    public function validateData($request, $user = null)
     {
-        return $request->validate($this->validationRules());
+        $data = $request->validate($this->validationRules($user));
+
+        if(!isset($data['password']))
+            unset($data['password']);
+
+        return $data;
     }
 }
