@@ -68,7 +68,7 @@
                     @if($groups->count())
                     <select name="group_id" id="group_select" class="form-control select2_single">
                         @foreach($groups as $group)
-                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        <option value="{{ $group->id }}" {{ ($user->group_id === $group->id) ? 'selected' : '' }}>{{ $group->name }}</option>
                         @endforeach
                     </select>
                     @endif
@@ -83,7 +83,7 @@
                     @if($branches->count())
                     <select name="branch_id" id="branch_select" class="form-control select2_single">
                         @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                        <option value="{{ $branch->id }}" {{ ($user->branch_id === $branch->id) ? 'selected' : '' }}>{{ $branch->name }}</option>
                         @endforeach
                     </select>
                     @endif
