@@ -32,7 +32,7 @@
                     <th>Status</th>
                 </tr>
             </thead>
-        
+
             <tbody>
                 @if($users->count() > 0)
                 @foreach($users as $user)
@@ -42,7 +42,7 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->group->name }}</td>
                     <td><a href="{{ route('branches.show', ['branch' => $user->branch]) }}">{{ $user->branch->name }}</a></td>
-                    <td>{{ isset($user->deleted_at) ? 'deleted' : 'active' }}</td>
+                    <td>{{ isset($user->deleted_at) ? 'disabled' : 'active' }}</td>
                 </tr>
                 @endforeach
                 @else
