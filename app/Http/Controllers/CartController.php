@@ -72,7 +72,7 @@ class CartController extends Controller
             ->route('products.index');
     }
 
-    public function modifyCart(Request $request, Cart $cart)
+    public function modifyQuantity(Request $request, Cart $cart)
     {
         $data = $request->validate([
             'quantity' => [
@@ -120,6 +120,20 @@ class CartController extends Controller
 
         return redirect()
             ->route('products.index');
+    }
+
+    public function modifyDescription(Request $request, Cart $cart)
+    {
+        $data = $request->validate([
+            'description' => [
+                'present'
+            ]
+        ]);
+
+        $cart->update($data);
+
+        return redirect()
+                ->route('carts.viewByCustomer', ['customer' => session('customer')]);
     }
 
 }
