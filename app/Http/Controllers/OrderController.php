@@ -20,9 +20,15 @@ class OrderController extends Controller
     {
         Auth::user()->can('list-order', Order::class) ?: abort(403);
 
-        $orders = Order::where('branch_id', Auth::user()->branch->id)
-            ->latest()
-            ->get();
+        $orders = Order::where(function ($query) {
+
+            if (Auth::user()->cannot('list-orders-all-branches')) {
+                $query->where('branch_id', Auth::user()->branch->id);
+            }
+
+        })
+        ->latest()
+        ->get();
 
         return view('order.index', compact('orders'));
     }
