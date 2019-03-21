@@ -40,6 +40,11 @@
                             @can('create-customer', 'App\Customer')
                             <li><a href="{{ route('customers.create') }}">Add Customer</a></li>
                             @endcan
+
+                            @can('select-customer', 'App\Customer')
+                            <li><a href="{{ route('customers.selected') }}">View Selected Customer</a></li>
+                            <li><a href="{{ route('customers.deselect.confirm') }}">Deselect Customer</a></li>
+                            @endcan
                         </ul>
                     </li>
                     @endif
