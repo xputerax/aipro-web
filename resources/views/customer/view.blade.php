@@ -71,8 +71,6 @@ Viewing customer: {{ $customer->full_name }}
                         @method('DELETE')
                         <a href="{{ route('customers.edit', compact('customer')) }}" class="btn btn-primary">Edit</a>
                         <a href="{{ route('carts.viewByCustomer', compact('customer')) }}" class="btn btn-primary">View Cart</a>
-                        <a href="#" class="btn btn-primary">Create Order</a>
-                        <a href="#" class="btn btn-primary">Create Order Sheet</a>
                         <input type="submit" value="Delete" class="btn btn-danger">
                     </form>
                 </div>
