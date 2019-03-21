@@ -164,11 +164,27 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deselect()
+    public function deselect(Request $request)
     {
         Auth::user()->can('select-customer', session('customer')) ?: abort(403);
 
-        return view('customer.deselect');
+        $request->session()->forget('customer');
+
+        return redirect()->route('customers.index');
+    }
+
+    /**
+     * Show the confirm deselect customer page
+     *
+     * @return void
+     */
+    public function confirmDeselect()
+    {
+        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
+
+        return view('customer.deselect', [
+            'customer' => session('customer')
+        ]);
     }
 
     /**
@@ -180,7 +196,9 @@ class CustomerController extends Controller
     {
         Auth::user()->can('select-customer', session('customer')) ?: abort(403);
 
-        return view('customer.selected');
+        $customer = session('customer');
+
+        return redirect()->route('customers.show', compact('customer'));
     }
 
     /**
