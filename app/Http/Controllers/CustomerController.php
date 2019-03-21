@@ -19,7 +19,11 @@ class CustomerController extends Controller
     {
         Auth::user()->can('list-customer', Customer::class) ?: abort(403);
 
-        $customers = Customer::where('branch_id', Auth::user()->branch->id);
+        $customers = Customer::where(function ($query) {
+            if (Auth::user()->cannot('list-customers-all-branches')) {
+                $query->where('branch_id', Auth::user()->branch_id);
+            }
+        });
 
         if($request->has('full_name')) {
             $full_name = $request->full_name;
