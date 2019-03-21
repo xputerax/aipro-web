@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    const ORDERS_PER_PAGE = 15;
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +31,7 @@ class OrderController extends Controller
 
         })
         ->latest()
-        ->get();
+        ->paginate(self::ORDERS_PER_PAGE);
 
         return view('order.index', compact('orders'));
     }
