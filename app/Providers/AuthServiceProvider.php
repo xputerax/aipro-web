@@ -202,5 +202,13 @@ class AuthServiceProvider extends ServiceProvider
             return $user->group_id === self::AIPRO_CEO_GROUP_ID;
         });
 
+        Gate::define('select-customer', function($user) {
+            return true;
+        });
+
+        Gate::define('select-this-customer', function($user, $customer) {
+            return $user->branch_id === $customer->branch->id;
+        });
+
     }
 }
