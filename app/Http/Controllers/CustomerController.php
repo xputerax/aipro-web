@@ -30,8 +30,6 @@ class CustomerController extends Controller
             ->latest()
             ->paginate(self::CUSTOMERS_PER_PAGE);
 
-        // dd($customers);
-
         return view('customer.index', compact('customers', 'request'));
     }
 
@@ -152,7 +150,7 @@ class CustomerController extends Controller
      */
     public function select(Request $request, Customer $customer)
     {
-        Auth::user()->can('select-customer', $customer) ?: abort(403);
+        Auth::user()->can('select-customer') && Auth::user()->can('select-this-customer', $customer) ?: abort(403);
 
         $request->session()->put('customer', clone $customer);
 
@@ -166,7 +164,7 @@ class CustomerController extends Controller
      */
     public function deselect(Request $request)
     {
-        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
+        Auth::user()->can('select-customer', Customer::class) ?: abort(403);
 
         $request->session()->forget('customer');
 
@@ -180,7 +178,7 @@ class CustomerController extends Controller
      */
     public function confirmDeselect()
     {
-        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
+        Auth::user()->can('select-customer', Customer::class) ?: abort(403);
 
         return view('customer.deselect', [
             'customer' => session('customer')
@@ -194,7 +192,7 @@ class CustomerController extends Controller
      */
     public function selected()
     {
-        Auth::user()->can('select-customer', session('customer')) ?: abort(403);
+        Auth::user()->can('select-customer', Customer::class) ?: abort(403);
 
         $customer = session('customer');
 
