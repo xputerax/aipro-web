@@ -15,6 +15,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('customers/selected', 'CustomerController@selected')->name('customers.selected');
     Route::get('customers/deselect', 'CustomerController@deselect')->name('customers.deselect');
+    Route::get('customers/deselect/confirm', 'CustomerController@confirmDeselect')->name('customers.deselect.confirm');
 
     Route::resources([
         'customers' => 'CustomerController',
