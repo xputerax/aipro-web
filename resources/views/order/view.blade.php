@@ -23,6 +23,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Order #{{ $order->id }} - {{ config('app.name') }}</title>
+
+    <style>
+    :root {
+        font-size: 13.5px;
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -79,8 +85,11 @@
                     <tbody>
                         @foreach($order->order_products as $order_product)
                         <tr>
+                            @php
+                                $description = nl2br(htmlentities($order_product->description ?? '-'));
+                            @endphp
                             <td>{{ $order_product->product->name }}</td>
-                            <td>{{ $order_product->description ?? '-' }}</td>
+                            <td>{!! $description !!}</td>
                             <td>{{ $order_product->price }}</td>
                             <td>{{ $order_product->quantity }}</td>
                             <td class="text-right">{{ sprintf("%.2f", (float) ($order_product->price * $order_product->quantity)) }}</td>
