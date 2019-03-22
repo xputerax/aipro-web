@@ -14,6 +14,7 @@ Editing Order #{{ $order->id }}
         @csrf
         @method('PUT')
 
+        {{-- start branch section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="branch">
                 Branch
@@ -22,7 +23,9 @@ Editing Order #{{ $order->id }}
                 <p class="form-control-static">{{ $order->branch->name }}</p>
             </div>
         </div>
+        {{-- end branch section --}}
 
+        {{-- start customer name section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="customer">
                 Customer
@@ -31,7 +34,9 @@ Editing Order #{{ $order->id }}
                 <p class="form-control-static">{{ $order->customer->full_name }}</p>
             </div>
         </div>
+        {{-- end customer name section --}}
 
+        {{-- start checkout user section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="checkout">
                 Checkout By
@@ -40,25 +45,67 @@ Editing Order #{{ $order->id }}
                 <p class="form-control-static">{{ $order->checkout_user->full_name }}</p>
             </div>
         </div>
+        {{-- end checkout user section --}}
 
+        {{-- start resolve user section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="resolved">
                 Resolved By
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <p class="form-control-static">{{ $order->resolve_user->full_name ?? '-' }}</p>
+                @if(isset($order->resolve_user_id))
+                    @if(Auth::user()->can('change-resolve-user-id'))
+                    <select name="resolve_user_id" id="resolve_user_id" class="form-control">
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ $user->id === $order->resolve_user_id ? 'selected' : ''}}>
+                            {{ $user->full_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @else
+                    <p class="form-control-static">{{ $order->resolve_user->full_name }}</p>
+                    @endif
+                @else
+                <select name="resolve_user_id" id="resolve_user_id" class="form-control">
+                    @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->full_name }}</option>
+                    @endforeach
+                </select>
+                @endif
             </div>
         </div>
+        {{-- end resolve user section --}}
 
+        {{-- start deliver user section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delivered">
                 Delivered By
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <p class="form-control-static">{{ $order->delivery_user->full_name ?? '-' }}</p>
+                @if(isset($order->delivery_user_id))
+                    @if(Auth::user()->can('change-delivery-user-id'))
+                    <select name="delivery_user_id" id="delivery_user_id" class="form-control">
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ $user->id === $order->delivery_user_id ? 'selected' : ''}}>
+                            {{ $user->full_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @else
+                    <p class="form-control-static">{{ $order->delivery_user->full_name }}</p>
+                    @endif
+                @else
+                <select name="delivery_user_id" id="delivery_user_id" class="form-control">
+                    @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->full_name }}</option>
+                    @endforeach
+                </select>
+                @endif
             </div>
         </div>
+        {{-- end deliver user section --}}
 
+        {{-- start status section --}}
         <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">
                 Status <span class="required">*</span>
@@ -71,15 +118,18 @@ Editing Order #{{ $order->id }}
                 </select>
             </div>
         </div>
+        {{-- end status section --}}
 
-        <div class="form-group">
+        {{-- start deposit section --}}
+        {{-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="deposit">
                 Deposit <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" class="form-control" name="deposit" value="{{ $order->deposit }}">
             </div>
-        </div>
+        </div> --}}
+        {{-- end deposit section --}}
 
         <div class="form-group">
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
@@ -114,4 +164,37 @@ Editing Order #{{ $order->id }}
         </form>
     </div>
 </div>
+
+<h3>Payments</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <th>Amount (RM)</th>
+        <th>Date</th>
+    </thead>
+
+    <tbody>
+    @if($order->payments->count())
+        @foreach($order->payments as $payment)
+        <tr>
+            <td>{{ $payment->amount }} {{ $payment->deposit == "1" ? "(deposit)" : "" }}</td>
+            <td>{{ $payment->created_at }}</td>
+        </tr>
+        @endforeach
+    @else
+        <tr>
+            <td colspan="2">No data</td>
+        </tr>
+    @endif
+    </tbody>
+</table>
+@endsection
+
+@section('scripts')
+@parent
+
+<script>
+    $("#resolve_user_id").select2();
+    $("#delivery_user_id").select2();
+</script>
 @endsection
