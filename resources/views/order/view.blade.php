@@ -1,3 +1,18 @@
+@php
+    $subtotal = sprintf("%.2f", $order->order_products->sum(function ($order_product) {
+        return (float) ($order_product->price * $order_product->quantity);
+    }));
+
+    $deposit = sprintf("%.2f", (
+        ($deposit = $order->payments->where('deposit', 1)->first()) !== null
+            ? $deposit->amount
+            : 0.00
+    ));
+
+    $amount_paid = sprintf("%.2f", $order->payments->sum('amount'));
+
+    $total = sprintf("%.2f", $subtotal - $deposit - $amount_paid);
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +48,7 @@
                             <th class="text-right" scope="row">No. Tel</th>
                             <td>{{ $order->customer->phone }}</td>
                         </tr>
-                        
+
                         <tr>
                             <th class="text-right" scope="row">No. KP</th>
                             <td>{{ $order->customer->ic_number }}</td>
@@ -62,46 +77,38 @@
                     </thead>
 
                     <tbody>
-                    @php
-                        $price_sum = (float) 0.00;
-                    @endphp
-
-                    @foreach($order->order_products as $order_product)
-                        @php
-                            $total_price = sprintf("%.2f", (float) $order_product->price * $order_product->quantity);
-                            $price_sum += $total_price;
-                        @endphp
-
+                        @foreach($order->order_products as $order_product)
                         <tr>
                             <td>{{ $order_product->product->name }}</td>
                             <td>{{ $order_product->description ?? '-' }}</td>
                             <td>{{ $order_product->price }}</td>
                             <td>{{ $order_product->quantity }}</td>
-                            <td class="text-right">{{ $total_price }}</td>
+                            <td class="text-right">{{ sprintf("%.2f", (float) ($order_product->price * $order_product->quantity)) }}</td>
                         </tr>
-                    @endforeach
-
-                    @php
-                        $price_sum = sprintf("%.2f", $price_sum);
-                    @endphp
-
+                        @endforeach
 
                         <tr>
                             <td colspan="3" class="border-top-0"></td>
                             <td style="border-top: 2px solid black;">Subtotal:</td>
-                            <td class="text-right" style="border-top: 2px solid black;">{{ $price_sum }}</td>
+                            <td class="text-right" style="border-top: 2px solid black;">{{ $subtotal }}</td>
                         </tr>
 
                         <tr>
                             <td colspan="3" class="border-top-0"></td>
                             <td>Deposit:</td>
-                            <td class="text-right">- {{ $order->deposit }}</td>
+                            <td class="text-right">- {{ $deposit }}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="border-top-0"></td>
+                            <td>Amount Paid:</td>
+                            <td class="text-right">- {{ $amount_paid }}</td>
                         </tr>
 
                         <tr>
                             <td colspan="3" class="border-top-0"></td>
                             <td>Total:</td>
-                            <td class="text-right">{{ sprintf("%.2f", $price_sum - $order->deposit) }}</td>
+                            <td class="text-right">{{ $total }}</td>
                         </tr>
                     </tbody>
                 </table>
