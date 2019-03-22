@@ -17,11 +17,11 @@ class Order extends Model
     ];
 
     protected $dates = [
-        'checkout_at', 'resolved_at', 'delivery_at', 'created_at', 'updated_at'
+        'checkout_at', 'resolved_at', 'delivered_at', 'created_at', 'updated_at'
     ];
 
     protected $fillable = [
-        'status', 'deposit'
+        'status', 'deposit', 'checkout_at', 'resolved_at', 'delivered_at', 'resolve_user_id', 'delivery_user_id'
     ];
 
     public function branch()
@@ -31,7 +31,7 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class)->withTrashed();
     }
 
     public function checkout_user()
