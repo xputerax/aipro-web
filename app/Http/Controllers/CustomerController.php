@@ -135,9 +135,12 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Request $request, Customer $customer)
     {
         Auth::user()->can('delete-customer', $customer) ?: abort(403);
+
+        if(session('customer') !== null && session('customer')->id === $customer->id)
+            $request->session()->forget('customer');
 
         $customer->delete();
 
