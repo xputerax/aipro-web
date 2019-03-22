@@ -8,6 +8,10 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use App\Payment;
 
 class OrderController extends Controller
 {
@@ -85,7 +89,9 @@ class OrderController extends Controller
     {
         Auth::user()->can('edit-order', $order) ?: abort(403);
 
-        return view('order.edit', compact('order'));
+        $users = User::where('branch_id', $order->branch_id)->get();
+
+        return view('order.edit', compact('order', 'users'));
     }
 
     /**
@@ -105,10 +111,29 @@ class OrderController extends Controller
                 'required',
                 'in:pending,resolved,delivered'
             ],
-            'deposit' => [
-                'required'
+            'resolve_user_id' => [
+                'sometimes'
+            ],
+            'delivery_user_id' => [
+                'sometimes'
             ]
         ]);
+
+        if(Auth::user()->cannot('change-resolve-user-id')) {
+            unset($data['resolve_user_id']);
+        }
+
+        if(Auth::user()->cannot('change-delivery-user-id')) {
+            unset($data['delivery_user_id']);
+        }
+
+        if(!isset($order->resolved_at) && isset($data['resolve_user_id'])) {
+            $data['resolved_at'] = Carbon::now();
+        }
+
+        if(!isset($order->delivered_at) && isset($data['delivery_user_id'])) {
+            $data['delivered_at'] = Carbon::now();
+        }
 
         $order->update($data);
 
