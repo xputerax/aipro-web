@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Customer;
 use App\Order;
 use App\OrderProduct;
-use App\Customer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,6 +54,7 @@ class CheckoutController extends Controller
         }
 
         return redirect()
-            ->route('orders.index');
+            ->route('orders.index')
+        ;
     }
 }

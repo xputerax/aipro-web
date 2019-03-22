@@ -10,11 +10,11 @@ class Customer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'full_name', 'phone', 'ic_number', 'sex', 'branch_id', 'user_id', 'source'
+        'full_name', 'phone', 'ic_number', 'sex', 'branch_id', 'user_id', 'source',
     ];
-    
+
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at'
+        'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function branch()

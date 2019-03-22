@@ -25,14 +25,15 @@ class CustomerController extends Controller
             }
         });
 
-        if($request->has('full_name')) {
+        if ($request->has('full_name')) {
             $full_name = $request->full_name;
-            $customers = $customers->where('full_name', 'like', '%' . $full_name . '%');
+            $customers = $customers->where('full_name', 'like', '%'.$full_name.'%');
         }
 
         $customers = $customers
             ->latest()
-            ->paginate(self::CUSTOMERS_PER_PAGE);
+            ->paginate(self::CUSTOMERS_PER_PAGE)
+        ;
 
         return view('customer.index', compact('customers', 'request'));
     }
@@ -139,8 +140,9 @@ class CustomerController extends Controller
     {
         Auth::user()->can('delete-customer', $customer) ?: abort(403);
 
-        if(session('customer') !== null && session('customer')->id === $customer->id)
+        if (null !== session('customer') && session('customer')->id === $customer->id) {
             $request->session()->forget('customer');
+        }
 
         $customer->delete();
 
@@ -148,10 +150,10 @@ class CustomerController extends Controller
     }
 
     /**
-     * Store the selected customer into session
+     * Store the selected customer into session.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Customer $customer
+     * @param \App\Customer            $customer
      *
      * @return \Illuminate\Http\Response
      */
@@ -165,7 +167,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Remove the selected customer from session
+     * Remove the selected customer from session.
      *
      * @return \Illuminate\Http\Response
      */
@@ -179,21 +181,19 @@ class CustomerController extends Controller
     }
 
     /**
-     * Show the confirm deselect customer page
-     *
-     * @return void
+     * Show the confirm deselect customer page.
      */
     public function confirmDeselect()
     {
         Auth::user()->can('select-customer', Customer::class) ?: abort(403);
 
         return view('customer.deselect', [
-            'customer' => session('customer')
+            'customer' => session('customer'),
         ]);
     }
 
     /**
-     * View the selected customer
+     * View the selected customer.
      *
      * @return \Illuminate\Http\Response
      */
@@ -207,7 +207,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Returns the validation rules for creating and editing customer
+     * Returns the validation rules for creating and editing customer.
      *
      * @return array
      */
@@ -239,9 +239,10 @@ class CustomerController extends Controller
     }
 
     /**
-     * Returns the validated form input
+     * Returns the validated form input.
      *
      * @param Request $request
+     *
      * @return array
      */
     protected function validateData(Request $request)

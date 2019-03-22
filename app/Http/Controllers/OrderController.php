@@ -4,18 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Invoice;
 use App\Order;
+use App\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
-use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
-use App\Payment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
 {
-
     const ORDERS_PER_PAGE = 15;
 
     /**
@@ -28,14 +26,13 @@ class OrderController extends Controller
         Auth::user()->can('list-order', Order::class) ?: abort(403);
 
         $orders = Order::where(function ($query) {
-
             if (Auth::user()->cannot('list-orders-all-branches')) {
                 $query->where('branch_id', Auth::user()->branch->id);
             }
-
         })
-        ->latest()
-        ->paginate(self::ORDERS_PER_PAGE);
+            ->latest()
+            ->paginate(self::ORDERS_PER_PAGE)
+        ;
 
         return view('order.index', compact('orders'));
     }
@@ -109,36 +106,37 @@ class OrderController extends Controller
         $data = $request->validate([
             'status' => [
                 'required',
-                'in:pending,resolved,delivered'
+                'in:pending,resolved,delivered',
             ],
             'resolve_user_id' => [
-                'sometimes'
+                'sometimes',
             ],
             'delivery_user_id' => [
-                'sometimes'
-            ]
+                'sometimes',
+            ],
         ]);
 
-        if(Auth::user()->cannot('change-resolve-user-id')) {
+        if (Auth::user()->cannot('change-resolve-user-id')) {
             unset($data['resolve_user_id']);
         }
 
-        if(Auth::user()->cannot('change-delivery-user-id')) {
+        if (Auth::user()->cannot('change-delivery-user-id')) {
             unset($data['delivery_user_id']);
         }
 
-        if(!isset($order->resolved_at) && isset($data['resolve_user_id'])) {
+        if (!isset($order->resolved_at) && isset($data['resolve_user_id'])) {
             $data['resolved_at'] = Carbon::now();
         }
 
-        if(!isset($order->delivered_at) && isset($data['delivery_user_id'])) {
+        if (!isset($order->delivered_at) && isset($data['delivery_user_id'])) {
             $data['delivered_at'] = Carbon::now();
         }
 
         $order->update($data);
 
         return redirect()
-            ->route('orders.edit', compact('order'));
+            ->route('orders.edit', compact('order'))
+        ;
     }
 
     /**
@@ -154,7 +152,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Generates the order receipt
+     * Generates the order receipt.
      *
      * @param Order $order
      *
@@ -197,7 +195,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Get the full invoice file name
+     * Get the full invoice file name.
      *
      * @param \App\Order $order
      *
@@ -226,9 +224,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Write the invoice content to file
+     * Write the invoice content to file.
      *
      * @param \App\Order $order
+     *
      * @return \Barryvdh\DomPDF\PDF
      */
     protected function writeInvoiceToFile($order)

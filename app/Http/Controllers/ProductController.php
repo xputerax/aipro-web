@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
-use App\Cart;
 use App\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -22,7 +20,8 @@ class ProductController extends Controller
 
         $products = Product::where('branch_id', Auth::user()->branch->id)
             ->latest()
-            ->get();
+            ->get()
+        ;
 
         return view('product.index', compact('products'));
     }
@@ -38,7 +37,8 @@ class ProductController extends Controller
 
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->orderBy('name', 'asc')
-            ->get();
+            ->get()
+        ;
 
         return view('product.form', compact('brands'));
     }
@@ -89,7 +89,8 @@ class ProductController extends Controller
 
         $brands = Brand::where('branch_id', Auth::user()->branch->id)
             ->latest()
-            ->get();
+            ->get()
+        ;
 
         return view('product.form', compact('product', 'brands'));
     }
@@ -111,12 +112,14 @@ class ProductController extends Controller
         if ($product->update($data)) {
             return redirect()
                 ->route('products.show', compact('product'))
-                ->with('message', 'The product has been updated');
+                ->with('message', 'The product has been updated')
+            ;
         }
 
         return redirect()
             ->route('products.show', compact('product'))
-            ->with('message', 'Failed to update product');
+            ->with('message', 'Failed to update product')
+        ;
     }
 
     /**
@@ -132,7 +135,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Returns the validation rules
+     * Returns the validation rules.
      *
      * @return array
      */
@@ -170,15 +173,16 @@ class ProductController extends Controller
             ],
             'type' => [
                 'required',
-                'in:product,service'
-            ]
+                'in:product,service',
+            ],
         ];
     }
 
     /**
-     * Returns the validated form data
+     * Returns the validated form data.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     protected function validateData($request)

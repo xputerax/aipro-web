@@ -21,8 +21,8 @@ class BranchController extends Controller
 
         $branches = Branch::orderBy('id', 'asc');
 
-        if($request->has('name')) {
-            $branches = $branches->where('name', 'like', '%' . $request->name . '%');
+        if ($request->has('name')) {
+            $branches = $branches->where('name', 'like', '%'.$request->name.'%');
         }
 
         $branches = $branches->paginate(self::BRANCHES_PER_PAGE);
@@ -45,7 +45,8 @@ class BranchController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -60,7 +61,8 @@ class BranchController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Branch  $branch
+     * @param \App\Branch $branch
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Branch $branch)
@@ -73,7 +75,8 @@ class BranchController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Branch  $branch
+     * @param \App\Branch $branch
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Branch $branch)
@@ -86,8 +89,9 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Branch  $branch
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Branch              $branch
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Branch $branch)
@@ -99,13 +103,15 @@ class BranchController extends Controller
 
         return redirect()
             ->route('branches.edit', compact('branch'))
-            ->with('message', 'Branch updated successfully');
+            ->with('message', 'Branch updated successfully')
+        ;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Branch  $branch
+     * @param \App\Branch $branch
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Branch $branch)
@@ -114,7 +120,7 @@ class BranchController extends Controller
     }
 
     /**
-     * Returns the form validation rules
+     * Returns the form validation rules.
      *
      * @return array
      */
@@ -124,29 +130,30 @@ class BranchController extends Controller
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'address' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'phone' => [
                 'required',
-                'max:15'
+                'max:15',
             ],
             'email' => [
                 'required',
                 'email',
-                'max:100'
+                'max:100',
             ],
         ];
     }
 
     /**
-     * Returns the validated form data
+     * Returns the validated form data.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     protected function validateData($request)

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Order;
-use Illuminate\Support\Facades\Auth;
 use App\Payment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -18,12 +18,12 @@ class PaymentController extends Controller
         $data = $request->validate([
             'amount' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
             'deposit' => [
                 'required',
-                'in:0,1'
-            ]
+                'in:0,1',
+            ],
         ]);
 
         $data['branch_id'] = $branch->id;
@@ -33,7 +33,7 @@ class PaymentController extends Controller
         Payment::create($data);
 
         return redirect()
-                ->route('orders.edit', compact('order'));
-
+            ->route('orders.edit', compact('order'))
+        ;
     }
 }

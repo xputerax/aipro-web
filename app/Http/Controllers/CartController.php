@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\Order;
-use App\OrderProduct;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\Cart;
-use Illuminate\Http\Request;
+use App\Customer;
 use App\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     /**
-     * Show the customer cart page
+     * Show the customer cart page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,9 +21,10 @@ class CartController extends Controller
     }
 
     /**
-     * Show the customer cart page
+     * Show the customer cart page.
      *
      * @param \App\Customer $customer
+     *
      * @return \Illuminate\Http\Response
      */
     public function viewCartByCustomer(Customer $customer)
@@ -42,7 +40,7 @@ class CartController extends Controller
         $data = $request->validate([
             'price' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
             'quantity' => [
                 'required',
@@ -58,18 +56,19 @@ class CartController extends Controller
         $cart->price = $data['price'];
         $cart->quantity = $data['quantity'];
 
-        if($product->type === "product"){
+        if ('product' === $product->type) {
             $product->stock -= $data['quantity'];
         }
 
-        if($cart->save() && $product->save()){
+        if ($cart->save() && $product->save()) {
             $request->session()->flash('message', 'Item added to cart');
         } else {
             $request->session()->flash('message', 'Failed to add item to cart');
         }
 
         return redirect()
-            ->route('products.index');
+            ->route('products.index')
+        ;
     }
 
     public function modifyQuantity(Request $request, Cart $cart)
@@ -78,18 +77,18 @@ class CartController extends Controller
             'quantity' => [
                 'required',
                 'integer',
-                'lte:'.$cart->product->stock
-            ]
+                'lte:'.$cart->product->stock,
+            ],
         ]);
 
-        if($data['quantity'] === "0"){
+        if ('0' === $data['quantity']) {
             $this->removeFromCart($request, $cart);
         } else {
             $quantity_difference = $cart->quantity - $data['quantity'];
 
             $product = $cart->product;
 
-            if($product->type === "product"){
+            if ('product' === $product->type) {
                 $product->stock += $quantity_difference;
                 $product->save();
             }
@@ -100,40 +99,42 @@ class CartController extends Controller
 
         return redirect()
             ->route('carts.viewByCustomer', [
-                'customer' => $cart->customer
-            ]);
+                'customer' => $cart->customer,
+            ])
+        ;
     }
 
     public function removeFromCart(Request $request, Cart $cart)
     {
         $product = $cart->product;
 
-        if($product->type === "product"){
+        if ('product' === $product->type) {
             $product->stock += $cart->quantity;
         }
 
-        if($product->save() && $cart->delete()){
+        if ($product->save() && $cart->delete()) {
             $request->session()->flash('message', 'Item removed from cart');
         } else {
             $request->session()->flash('message', 'Failed to remove item from cart');
         }
 
         return redirect()
-            ->route('products.index');
+            ->route('products.index')
+        ;
     }
 
     public function modifyDescription(Request $request, Cart $cart)
     {
         $data = $request->validate([
             'description' => [
-                'present'
-            ]
+                'present',
+            ],
         ]);
 
         $cart->update($data);
 
         return redirect()
-                ->route('carts.viewByCustomer', ['customer' => session('customer')]);
+            ->route('carts.viewByCustomer', ['customer' => session('customer')])
+        ;
     }
-
 }

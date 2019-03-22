@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-use App\Product;
 
 class BrandController extends Controller
 {
@@ -20,13 +20,14 @@ class BrandController extends Controller
     {
         Auth::user()->can('list-brand', Brand::class) ?: abort(403);
 
-        $brands = Brand::where(function($query) {
-            if(Auth::user()->cannot('get-brands-all-branches')) {
+        $brands = Brand::where(function ($query) {
+            if (Auth::user()->cannot('get-brands-all-branches')) {
                 $query->where('branch_id', Auth::user()->branch->id);
             }
         })
-        ->latest()
-        ->get();
+            ->latest()
+            ->get()
+        ;
 
         return view('brand.index', compact('brands'));
     }
@@ -138,7 +139,7 @@ class BrandController extends Controller
                 'required',
                 'max:100',
                 'alpha_dash',
-                'unique_with:brands,name,branch_id'
+                'unique_with:brands,name,branch_id',
             ],
 
             'description' => [

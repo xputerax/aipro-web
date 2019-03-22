@@ -2,15 +2,14 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
-    
+
     protected $rememberTokenName = '';
 
     /**
@@ -19,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'username', 'full_name', 'password', 'group_id', 'branch_id'
+        'email', 'username', 'full_name', 'password', 'group_id', 'branch_id',
     ];
 
     /**
@@ -28,11 +27,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token',
     ];
 
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at'
+        'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function group()
@@ -49,5 +48,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Customer::class);
     }
-
 }

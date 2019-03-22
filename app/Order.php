@@ -7,21 +7,20 @@ use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
-
     protected $attributes = [
         'resolve_user_id' => null,
         'delivery_user_id' => null,
         'resolved_at' => null,
         'delivered_at' => null,
-        'deposit' => '0.00'
+        'deposit' => '0.00',
     ];
 
     protected $dates = [
-        'checkout_at', 'resolved_at', 'delivered_at', 'created_at', 'updated_at'
+        'checkout_at', 'resolved_at', 'delivered_at', 'created_at', 'updated_at',
     ];
 
     protected $fillable = [
-        'status', 'deposit', 'checkout_at', 'resolved_at', 'delivered_at', 'resolve_user_id', 'delivery_user_id'
+        'status', 'deposit', 'checkout_at', 'resolved_at', 'delivered_at', 'resolve_user_id', 'delivery_user_id',
     ];
 
     public function branch()
@@ -62,16 +61,17 @@ class Order extends Model
     public function getTotalPriceAttribute()
     {
         return $this->select(DB::raw('sum(quantity * price) as sum_price'))
-                    ->from('order_products')
-                    ->where('order_products.order_id', $this->id)
-                    ->first()
-                    ->sum_price;
+            ->from('order_products')
+            ->where('order_products.order_id', $this->id)
+            ->first()
+            ->sum_price;
     }
 
     public function getTotalPriceAfterDepositAttribute()
     {
         $calculated = $this->total_price - $this->deposit;
-        return sprintf("%.2f", $calculated);
+
+        return sprintf('%.2f', $calculated);
     }
 
     public function invoice()

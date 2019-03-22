@@ -17,7 +17,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the edit profile form
+     * Show the edit profile form.
      *
      * @return \Illuminate\Http\Response
      */
@@ -27,7 +27,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Save the user profile
+     * Save the user profile.
      *
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +50,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Returns the form validation rules
+     * Returns the form validation rules.
      *
      * @return array
      */
@@ -84,7 +84,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Creates and returns the form validator instance
+     * Creates and returns the form validator instance.
      *
      * @return \Illuminate\Validation\Validator
      */
@@ -99,7 +99,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Returns the validated form data
+     * Returns the validated form data.
      *
      * @return array
      */

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     public $timestamps = false;
-    
+
     protected $fillable = [
-        'name', 'address', 'phone', 'email'
+        'name', 'address', 'phone', 'email',
     ];
 
     public function users()
@@ -21,5 +21,4 @@ class Branch extends Model
     {
         return $this->hasMany(Customer::class);
     }
-
 }

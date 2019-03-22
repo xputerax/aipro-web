@@ -6,13 +6,14 @@ use App\Branch;
 use App\Group;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     const USERS_PER_PAGE = 15;
+
     /**
      * Display a listing of the resource.
      *
@@ -22,14 +23,14 @@ class UserController extends Controller
     {
         Auth::user()->can('list-user', User::class) ?: abort(403);
 
-        if(Auth::user()->can('search-users-across-branches')) {
+        if (Auth::user()->can('search-users-across-branches')) {
             $users = new User();
         } else {
             $users = User::where('branch_id', Auth::user()->branch->id);
         }
 
-        if($request->has('name')) {
-            $users = $users->where('full_name', 'like', '%' . $request->name . '%');
+        if ($request->has('name')) {
+            $users = $users->where('full_name', 'like', '%'.$request->name.'%');
         }
 
         $users = $users->withTrashed()->paginate(self::USERS_PER_PAGE);
@@ -71,7 +72,7 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        if($data['status'] === "disabled") {
+        if ('disabled' === $data['status']) {
             $user->delete();
         }
 
@@ -125,7 +126,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        if($data['status'] === "active") {
+        if ('active' === $data['status']) {
             $user->restore();
         } else {
             $user->delete();
@@ -149,7 +150,8 @@ class UserController extends Controller
     /**
      * Returns the validation rules.
      *
-     * @param \App\User|null $user
+     * @param null|\App\User $user
+     *
      * @return array
      */
     public function validationRules($user)
@@ -182,21 +184,17 @@ class UserController extends Controller
             ],
             'status' => [
                 'required',
-                'in:active,disabled'
-            ]
+                'in:active,disabled',
+            ],
         ];
 
         if (isset($user)) {
-
             $rules['email'][] = Rule::unique('users')->ignore($user->id);
             $rules['username'][] = Rule::unique('users')->ignore($user->id);
-
         } else {
-
             $rules['email'][] = 'unique:users';
             $rules['username'][] = 'unique:users';
             $rules['password'][] = 'required';
-
         }
 
         return $rules;
@@ -206,7 +204,7 @@ class UserController extends Controller
      * Validate the request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\User|null $user
+     * @param null|\App\User           $user
      *
      * @return array
      */
@@ -214,8 +212,9 @@ class UserController extends Controller
     {
         $data = $request->validate($this->validationRules($user));
 
-        if(!isset($data['password']))
+        if (!isset($data['password'])) {
             unset($data['password']);
+        }
 
         return $data;
     }
