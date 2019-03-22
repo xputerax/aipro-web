@@ -22,8 +22,6 @@ class CheckoutController extends Controller
          */
         $cartItems = $customer->carts;
 
-        $date = Carbon::now();
-
         /**
          * Create new order
          * pls check.
@@ -32,12 +30,9 @@ class CheckoutController extends Controller
         $order->branch_id = $customer->branch_id;
         $order->customer_id = $customer->id;
         $order->checkout_user_id = Auth::user()->id;
-        // $order->resolve_user_id = null;
-        // $order->delivery_user_id = null;
         $order->status = self::ORDER_STATUS_PENDING;
         $order->deposit = '0.00';
-        $order->checkout_at = $date;
-        // $order->resolved_at = $order->delivered_at = ;
+        $order->checkout_at = Carbon::now();
         $order->save();
 
         foreach ($cartItems as $cartItem) {
@@ -47,6 +42,7 @@ class CheckoutController extends Controller
             $orderProduct->product_id = $cartItem->product_id;
             $orderProduct->price = $cartItem->price;
             $orderProduct->quantity = $cartItem->quantity;
+            $orderProduct->description = $cartItem->description;
             $orderProduct->save();
 
             // Delete the item from the cart
