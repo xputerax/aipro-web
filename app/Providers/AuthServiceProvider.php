@@ -67,11 +67,11 @@ class AuthServiceProvider extends ServiceProvider
          * Brand section
          */
         Gate::define('list-brand', function($user) {
-            return $user->group_id === self::AIPRO_MANAGER_GROUP_ID;
+            return true;
         });
 
         Gate::define('create-brand', function($user) {
-            return $user->group_id === self::AIPRO_MANAGER_GROUP_ID;
+            return true;
         });
 
         Gate::define('view-brand', function($user, $brand) {
