@@ -116,11 +116,11 @@ class OrderController extends Controller
             ],
         ]);
 
-        if (Auth::user()->cannot('change-resolve-user-id')) {
+        if (Auth::user()->cannot('change-resolve-user-id', $order)) {
             unset($data['resolve_user_id']);
         }
 
-        if (Auth::user()->cannot('change-delivery-user-id')) {
+        if (Auth::user()->cannot('change-delivery-user-id', $order)) {
             unset($data['delivery_user_id']);
         }
 
