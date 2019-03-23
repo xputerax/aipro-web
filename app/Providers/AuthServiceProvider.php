@@ -75,8 +75,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-brand', function($user, $brand) {
-            return $user->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $user->branch->id === $brand->branch_id;
+            return $user->branch->id === $brand->branch_id;
         });
 
         Gate::define('edit-brand', function($user, $brand) {
