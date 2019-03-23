@@ -42,7 +42,25 @@ Editing Order #{{ $order->id }}
                 Checkout By
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <p class="form-control-static">{{ $order->checkout_user->full_name }}</p>
+                @if(isset($order->checkout_user_id))
+                    @if(Auth::user()->can('change-checkout-user-id', $order))
+                    <select name="checkout_user_id" id="checkout_user_id" class="form-control">
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}"{{ $user->id === $order->checkout_user_id ? 'selected' : ''}}>
+                            {{ $user->full_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @else
+                    <p class="form-control-static">{{ $order->checkout_user->full_name }}</p>
+                    @endif
+                @else
+                <select name="checkout_user_id" id="checkout_user_id" class="form-control">
+                    @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->full_name }}</option>
+                    @endforeach
+                </select>
+                @endif
             </div>
         </div>
         {{-- end checkout user section --}}
@@ -57,7 +75,7 @@ Editing Order #{{ $order->id }}
                     @if(Auth::user()->can('change-resolve-user-id', $order))
                     <select name="resolve_user_id" id="resolve_user_id" class="form-control">
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ $user->id === $order->resolve_user_id ? 'selected' : ''}}>
+                        <option value="{{ $user->id }}"{{ $user->id === $order->resolve_user_id ? 'selected' : ''}}>
                             {{ $user->full_name }}
                         </option>
                         @endforeach
@@ -86,7 +104,7 @@ Editing Order #{{ $order->id }}
                     @if(Auth::user()->can('change-delivery-user-id', $order))
                     <select name="delivery_user_id" id="delivery_user_id" class="form-control">
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ $user->id === $order->delivery_user_id ? 'selected' : ''}}>
+                        <option value="{{ $user->id }}"{{ $user->id === $order->delivery_user_id ? 'selected' : ''}}>
                             {{ $user->full_name }}
                         </option>
                         @endforeach
@@ -112,8 +130,8 @@ Editing Order #{{ $order->id }}
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="status" class="form-control">
-                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="resolved" {{ $order->status == 'resolved' ? 'selected' : '' }}>Resolved</option>
+                    <option value="pending"{{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="resolved"{{ $order->status == 'resolved' ? 'selected' : '' }}>Resolved</option>
                     <option value="delivered"{{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                 </select>
             </div>
@@ -208,6 +226,7 @@ Editing Order #{{ $order->id }}
 @parent
 
 <script>
+    $("#checkout_user_id").select2();
     $("#resolve_user_id").select2();
     $("#delivery_user_id").select2();
 </script>
