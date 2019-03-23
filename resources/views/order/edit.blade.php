@@ -135,6 +135,7 @@ Editing Order #{{ $order->id }}
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
                 <input type="submit" value="Save" class="btn btn-primary">
                 <a href="{{ route('orders.show', compact('order')) }}" class="btn btn-primary">View</a>
+                <a href="{{ route('orders.generateReceipt', compact('order')) }}" class="btn btn-primary">Generate Receipt</a>
             </div>
         </div>
     </form>
