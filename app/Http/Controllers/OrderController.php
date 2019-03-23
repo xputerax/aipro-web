@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Invoice;
 use App\Order;
 use App\User;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
 {
@@ -160,81 +157,11 @@ class OrderController extends Controller
      */
     public function generateReceipt(Order $order)
     {
-        $invoice = Invoice::where('order_id', $order->id)->first();
+        $receipt_html = $this->show($order)->render();
 
-        // dd($invoice);
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($receipt_html);
 
-        if ($invoice) {
-            $invoice_file = storage_path('invoices/'.$invoice->invoice_file);
-            // dd(1);
-            dd($invoice, $invoice_file, 1);
-        // return PDF::stream(storage_path('invoices/' . $invoice->invoice_file));
-        } else {
-            $invoice = $this->createNewInvoice($order);
-            $pdf = $this->writeInvoiceToFile($order);
-            // dd($invoice, $pdf);
-            return $pdf->stream();
-        }
-    }
-
-    /**
-     * Generate invoice file name for an order.
-     *
-     * @param \App\Order $order
-     *
-     * @return string
-     */
-    protected function getNewInvoiceFileName($order)
-    {
-        return str_slug(implode(' ', [
-            'order',
-            $order->id,
-            $order->customer->full_name,
-            $order->created_at->timestamp,
-        ]), '-').'.pdf';
-    }
-
-    /**
-     * Get the full invoice file name.
-     *
-     * @param \App\Order $order
-     *
-     * @return string
-     */
-    protected function getFullInvoiceFileName($order)
-    {
-        return storage_path('invoices/'.$order->invoice->invoice_file);
-    }
-
-    /**
-     * Add a new invoice record.
-     *
-     * @param \App\Order $order
-     *
-     * @return \App\Invoice
-     */
-    protected function createNewInvoice($order)
-    {
-        $invoice = new Invoice();
-        $invoice->order_id = $order->id;
-        $invoice->invoice_file = $this->getNewInvoiceFileName($order);
-        $invoice->save();
-
-        return $invoice;
-    }
-
-    /**
-     * Write the invoice content to file.
-     *
-     * @param \App\Order $order
-     *
-     * @return \Barryvdh\DomPDF\PDF
-     */
-    protected function writeInvoiceToFile($order)
-    {
-        $pdf = PDF::loadView('invoice-template', compact('order'));
-        $pdf->save($this->getFullInvoiceFileName($order));
-
-        return $pdf;
+        return $pdf->stream();
     }
 }
