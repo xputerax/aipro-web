@@ -160,6 +160,11 @@ Editing Order #{{ $order->id }}
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="date" class="control-label">Date</label>
+                <input type="datetime" name="created_at" class="form-control" value="{{ \Illuminate\Support\Carbon::now() }}">
+            </div>
+
             <input type="submit" value="Add Payment" class="btn btn-primary">
         </form>
     </div>
@@ -171,6 +176,7 @@ Editing Order #{{ $order->id }}
     <thead>
         <th>Amount (RM)</th>
         <th>Date</th>
+        <th>Action</th>
     </thead>
 
     <tbody>
@@ -179,6 +185,13 @@ Editing Order #{{ $order->id }}
         <tr>
             <td>{{ $payment->amount }} {{ $payment->deposit == "1" ? "(deposit)" : "" }}</td>
             <td>{{ $payment->created_at }}</td>
+            <td>
+                <form action="{{ route('payments.destroy', compact('payment')) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </td>
         </tr>
         @endforeach
     @else

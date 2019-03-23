@@ -231,5 +231,13 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
+        Gate::define('create-payment', function ($user, $order) {
+            return $user->branch_id === $order->branch_id;
+        });
+
+        Gate::define('delete-payment', function ($user, $payment) {
+            return $user->branch_id === $payment->branch_id;
+        });
+
     }
 }

@@ -48,4 +48,6 @@ Route::middleware('auth')->group(function () {
 
     Route::put('carts/{cart}/modifyDescription', 'CartController@modifyDescription')->name('carts.modifyDescription');
 
+    Route::delete('payments/{payment}', 'PaymentController@destroy')->name('payments.destroy');
+
 });

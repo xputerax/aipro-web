@@ -24,6 +24,10 @@ class PaymentController extends Controller
                 'required',
                 'in:0,1',
             ],
+            'created_at' => [
+                'required',
+                'date',
+            ]
         ]);
 
         $data['branch_id'] = $branch->id;
@@ -35,5 +39,16 @@ class PaymentController extends Controller
         return redirect()
             ->route('orders.edit', compact('order'))
         ;
+    }
+
+    public function destroy(Payment $payment)
+    {
+        Auth::user()->can('delete-payment', $payment) ?: abort(403);
+
+        $order_id = $payment->order_id;
+
+        $payment->delete();
+
+        return redirect()->route('orders.edit', ['order' => $order_id]);
     }
 }
