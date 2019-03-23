@@ -213,6 +213,15 @@ class AuthServiceProvider extends ServiceProvider
             return $user->group_id === self::AIPRO_CEO_GROUP_ID;
         });
 
+        Gate::define('change-checkout-user-id', function($user, $order) {
+            if(isset($order->checkout_user_id)) {
+                return $user->group_id === self::AIPRO_MANAGER_GROUP_ID
+                    && $user->branch_id === $order->branch_id;
+            } else {
+                return $user->branch_id === $order->branch_id;
+            }
+        });
+
         Gate::define('change-resolve-user-id', function($user, $order) {
             if(isset($order->resolve_user_id)) {
                 return $user->group_id === self::AIPRO_MANAGER_GROUP_ID
