@@ -105,6 +105,9 @@ class OrderController extends Controller
                 'required',
                 'in:pending,resolved,delivered',
             ],
+            'checkout_user_id' => [
+                'sometimes',
+            ],
             'resolve_user_id' => [
                 'sometimes',
             ],
@@ -113,6 +116,10 @@ class OrderController extends Controller
             ],
         ]);
 
+        if (Auth::user()->cannot('change-checkout-user-id', $order)) {
+            unset($data['checkout_user_id']);
+        }
+
         if (Auth::user()->cannot('change-resolve-user-id', $order)) {
             unset($data['resolve_user_id']);
         }
@@ -120,6 +127,9 @@ class OrderController extends Controller
         if (Auth::user()->cannot('change-delivery-user-id', $order)) {
             unset($data['delivery_user_id']);
         }
+
+        // checkout_at takde sebab dah insert masa create order
+        // see CheckoutController@checkout
 
         if (!isset($order->resolved_at) && isset($data['resolve_user_id'])) {
             $data['resolved_at'] = Carbon::now();
