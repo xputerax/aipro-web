@@ -54,7 +54,7 @@ Editing Order #{{ $order->id }}
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 @if(isset($order->resolve_user_id))
-                    @if(Auth::user()->can('change-resolve-user-id'))
+                    @if(Auth::user()->can('change-resolve-user-id', $order))
                     <select name="resolve_user_id" id="resolve_user_id" class="form-control">
                         @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ $user->id === $order->resolve_user_id ? 'selected' : ''}}>
@@ -83,7 +83,7 @@ Editing Order #{{ $order->id }}
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 @if(isset($order->delivery_user_id))
-                    @if(Auth::user()->can('change-delivery-user-id'))
+                    @if(Auth::user()->can('change-delivery-user-id', $order))
                     <select name="delivery_user_id" id="delivery_user_id" class="form-control">
                         @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ $user->id === $order->delivery_user_id ? 'selected' : ''}}>
