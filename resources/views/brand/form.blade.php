@@ -37,6 +37,35 @@ Editing Brand {{ $brand->name }}
             </div>
             <!-- end name section -->
 
+            @if(Auth::user()->can('add-brand-all-branches'))
+            <!-- start branch section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                    Branch <span class="required">*</span>
+                </label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select name="branch_id" id="branch_select" class="form-control">
+                    @foreach($branches as $branch)
+                        @php
+                            if(Route::currentRouteName() === "brands.edit" && $brand->branch_id === $branch->id) {
+                                $selected = "selected";
+                            } elseif(Route::currentRouteName() === "brands.create" && Auth::user()->branch_id === $branch->id) {
+                                $selected = "selected";
+                            } else {
+                                $selected = "";
+                            }
+                        @endphp
+                        <option value="{{ $branch->id }}" {{ $selected }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+                    </select>
+                </div>
+            </div>
+            <!-- end branch section -->
+            @endif
+
             <!-- start description section-->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">
@@ -56,7 +85,7 @@ Editing Brand {{ $brand->name }}
                 </div>
             </div>
             <!-- end button section -->
-            
+
         </form>
 
         @if($errors->any())
@@ -70,4 +99,15 @@ Editing Brand {{ $brand->name }}
         @endif
     </div> <!-- end .x_content -->
 </div> <!-- end .x_panel -->
+@endsection
+
+@section('scripts')
+@parent
+
+@if(Auth::user()->can('add-brand-all-branches'))
+<script>
+    $("#branch_select").select2();
+</script>
+@endif
+
 @endsection
