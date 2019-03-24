@@ -248,5 +248,9 @@ class AuthServiceProvider extends ServiceProvider
             return $user->branch_id === $payment->branch_id;
         });
 
+        Gate::define('add-brand-all-branches', function ($user) {
+            return $user->group_id === self::AIPRO_CEO_GROUP_ID;
+        });
+
     }
 }
