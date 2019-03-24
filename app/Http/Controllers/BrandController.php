@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Branch;
 
 class BrandController extends Controller
 {
@@ -41,7 +42,13 @@ class BrandController extends Controller
     {
         Auth::user()->can('create-brand', Brand::class) ?: abort(403);
 
-        return view('brand.form');
+        $data = [];
+
+        if (Auth::user()->can('add-brand-all-branches')) {
+            $data['branches'] = Branch::all();
+        }
+
+        return view('brand.form', $data);
     }
 
     /**
@@ -55,13 +62,7 @@ class BrandController extends Controller
     {
         Auth::user()->can('create-brand', Brand::class) ?: abort(403);
 
-        $validator = Validator::make(
-            array_merge($request->all(), ['branch_id' => Auth::user()->branch_id]),
-            array_merge($this->validationRules(), ['branch_id' => ['required']]),
-            ['name.unique_with' => 'Brand name already exist in the current branch']
-        );
-
-        $data = $validator->validate();
+        $data = $this->validateData($request);
 
         try {
             Brand::create($data);
@@ -115,6 +116,7 @@ class BrandController extends Controller
         Auth::user()->can('edit-brand', $brand) ?: abort(403);
 
         $data = $this->validateData($request);
+
         $brand->update($data);
 
         return redirect()->route('brands.edit', compact('brand'));
@@ -132,24 +134,75 @@ class BrandController extends Controller
         Auth::user()->can('delete-brand', $brand) ?: abort(403);
     }
 
+    /**
+     * Returns the validation rules
+     *
+     * @return array
+     */
     protected function validationRules()
     {
         return [
             'name' => [
                 'required',
                 'max:100',
-                'alpha_dash',
                 'unique_with:brands,name,branch_id',
             ],
-
+            'branch_id' => [
+                'required',
+            ],
             'description' => [
                 'present',
             ],
         ];
     }
 
+    /**
+     * Returns the validated form data
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     protected function validateData($request)
     {
-        return $request->validate($this->validationRules());
+        return $this->makeValidator($request)->validate();
+    }
+
+    /**
+     * Returns the validation error message
+     *
+     * @return array
+     */
+    protected function validationMessages()
+    {
+        return ['name.unique_with' => 'Brand name already exist in the current branch'];
+    }
+
+    /**
+     * Returns the request data with branch_id appended to it
+     *
+     * @param \Illuminate\Http|Request $request
+     * @return array
+     */
+    protected function getRequestData($request)
+    {
+        return array_merge(
+            $request->all(),
+            Auth::user()->cannot('add-brand-all-branches') ? ['branch_id' => Auth::user()->branch_id] : []
+        );
+    }
+
+    /**
+     * Creates the validator instance
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Validation\Validator
+     */
+    protected function makeValidator($request)
+    {
+        return Validator::make(
+            $this->getRequestData($request),
+            $this->validationRules(),
+            $this->validationMessages()
+        );
     }
 }
