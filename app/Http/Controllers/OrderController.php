@@ -24,7 +24,7 @@ class OrderController extends Controller
 
         $orders = Order::where(function ($query) {
             if (Auth::user()->cannot('list-orders-all-branches')) {
-                $query->where('branch_id', Auth::user()->branch->id);
+                $query->where('branch_id', Auth::user()->branch_id);
             }
         })
             ->latest()

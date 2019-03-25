@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         Auth::user()->can('list-product', Product::class) ?: abort(403);
 
-        $products = Product::where('branch_id', Auth::user()->branch->id)
+        $products = Product::where('branch_id', Auth::user()->branch_id)
             ->latest()
             ->get()
         ;
@@ -35,7 +35,7 @@ class ProductController extends Controller
     {
         Auth::user()->can('create-product', Product::class) ?: abort(403);
 
-        $brands = Brand::where('branch_id', Auth::user()->branch->id)
+        $brands = Brand::where('branch_id', Auth::user()->branch_id)
             ->orderBy('name', 'asc')
             ->get()
         ;
@@ -55,7 +55,7 @@ class ProductController extends Controller
         Auth::user()->can('create-product', Product::class) ?: abort(403);
 
         $data = $this->validateData($request);
-        $data['branch_id'] = Auth::user()->branch->id;
+        $data['branch_id'] = Auth::user()->branch_id;
 
         Product::create($data);
 
@@ -87,7 +87,7 @@ class ProductController extends Controller
     {
         Auth::user()->can('edit-product', $product) ?: abort(403);
 
-        $brands = Brand::where('branch_id', Auth::user()->branch->id)
+        $brands = Brand::where('branch_id', Auth::user()->branch_id)
             ->latest()
             ->get()
         ;

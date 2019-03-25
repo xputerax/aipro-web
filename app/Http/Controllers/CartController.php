@@ -50,7 +50,7 @@ class CartController extends Controller
         ]);
 
         $cart = new Cart();
-        $cart->branch_id = $user->branch->id;
+        $cart->branch_id = $user->branch_id;
         $cart->customer_id = $customer->id;
         $cart->product_id = $product->id;
         $cart->price = $data['price'];

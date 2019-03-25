@@ -75,17 +75,17 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-brand', function($user, $brand) {
-            return $user->branch->id === $brand->branch_id;
+            return $user->branch_id === $brand->branch_id;
         });
 
         Gate::define('edit-brand', function($user, $brand) {
             return $user->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $user->branch->id === $brand->branch_id;
+                && $user->branch_id === $brand->branch_id;
         });
 
         Gate::define('delete-brand', function($user, $brand) {
             return $user->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $user->branch->id === $brand->branch_id;
+                && $user->branch_id === $brand->branch_id;
         });
 
         /**
@@ -100,15 +100,15 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-customer', function($user, $customer) {
-            return $user->branch->id === $customer->branch_id;
+            return $user->branch_id === $customer->branch_id;
         });
 
         Gate::define('edit-customer', function($user, $customer) {
-            return $user->branch->id === $customer->branch_id;
+            return $user->branch_id === $customer->branch_id;
         });
 
         Gate::define('delete-customer', function($user, $customer) {
-            return $user->branch->id === $customer->branch_id;
+            return $user->branch_id === $customer->branch_id;
         });
 
         /**
@@ -123,15 +123,15 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-order', function($user, $order) {
-            return $user->branch->id === $order->customer->branch->id;
+            return $user->branch_id === $order->customer->branch_id;
         });
 
         Gate::define('edit-order', function($user, $order) {
-            return $user->branch->id === $order->customer->branch->id;
+            return $user->branch_id === $order->customer->branch_id;
         });
 
         Gate::define('delete-order', function($user, $order) {
-            return $user->branch->id === $order->customer->branch->id;
+            return $user->branch_id === $order->customer->branch_id;
         });
 
         /**
@@ -146,15 +146,15 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-product', function($user, $product) {
-            return $user->branch->id === $product->branch_id;
+            return $user->branch_id === $product->branch_id;
         });
 
         Gate::define('edit-product', function($user, $product) {
-            return $user->branch->id === $product->branch_id;
+            return $user->branch_id === $product->branch_id;
         });
 
         Gate::define('delete-product', function($user, $product) {
-            return $user->branch->id === $product->branch_id;
+            return $user->branch_id === $product->branch_id;
         });
 
         /**
@@ -170,17 +170,17 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view-user', function($currentUser, $user) {
             return $currentUser->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $currentUser->branch->id === $user->branch->id;
+                && $currentUser->branch_id === $user->branch_id;
         });
 
         Gate::define('edit-user', function($currentUser, $user) {
             return $currentUser->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $currentUser->branch->id === $user->branch->id;
+                && $currentUser->branch_id === $user->branch_id;
         });
 
         Gate::define('delete-user', function($currentUser, $user) {
             return $currentUser->group_id === self::AIPRO_MANAGER_GROUP_ID
-                && $currentUser->branch->id === $user->branch->id;
+                && $currentUser->branch_id === $user->branch_id;
         });
 
         /**/
@@ -206,7 +206,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('select-this-customer', function($user, $customer) {
-            return $user->branch_id === $customer->branch->id;
+            return $user->branch_id === $customer->branch_id;
         });
 
         Gate::define('list-customers-all-branches', function ($user) {

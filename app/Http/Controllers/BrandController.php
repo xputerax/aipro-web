@@ -23,7 +23,7 @@ class BrandController extends Controller
 
         $brands = Brand::where(function ($query) {
             if (Auth::user()->cannot('get-brands-all-branches')) {
-                $query->where('branch_id', Auth::user()->branch->id);
+                $query->where('branch_id', Auth::user()->branch_id);
             }
         })
             ->latest()

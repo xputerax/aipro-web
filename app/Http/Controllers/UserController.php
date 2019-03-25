@@ -26,7 +26,7 @@ class UserController extends Controller
         if (Auth::user()->can('search-users-across-branches')) {
             $users = new User();
         } else {
-            $users = User::where('branch_id', Auth::user()->branch->id);
+            $users = User::where('branch_id', Auth::user()->branch_id);
         }
 
         if ($request->has('name')) {
