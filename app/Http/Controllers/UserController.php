@@ -64,11 +64,7 @@ class UserController extends Controller
     {
         Auth::user()->can('create-user', User::class) ?: abort(403);
 
-        $data = $this->validateData($request, null);
-
-        if ('disabled' === $data['status']) {
-            $data['deleted_at'] = Carbon::now();
-        }
+        $data = $this->validateData($request, $user = null);
 
         $user = User::create($data);
 
@@ -179,7 +175,7 @@ class UserController extends Controller
                 'exists:groups,id',
             ],
             'branch_id' => [
-                'required',
+                'sometimes',
                 'exists:branches,id',
             ],
             'status' => [
