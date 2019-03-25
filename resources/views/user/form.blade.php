@@ -76,6 +76,7 @@
             </div>
             <!-- end group section -->
 
+            @if(Auth::user()->can('create-user-all-branches'))
             <!-- start branch section -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="branch_id">Branch</label>
@@ -83,13 +84,16 @@
                     @if($branches->count())
                     <select name="branch_id" id="branch_select" class="form-control select2_single">
                         @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}" {{ (isset($user) && $user->branch_id === $branch->id) ? 'selected' : '' }}>{{ $branch->name }}</option>
+                        <option value="{{ $branch->id }}" {{ (isset($user) && $user->branch_id === $branch->id) ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
                         @endforeach
                     </select>
                     @endif
                 </div>
             </div>
             <!-- end branch section -->
+            @endif
 
             <!-- start active/disabled section -->
             <div class="form-group">
