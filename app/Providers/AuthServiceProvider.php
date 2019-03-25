@@ -252,5 +252,9 @@ class AuthServiceProvider extends ServiceProvider
             return $user->group_id === self::AIPRO_CEO_GROUP_ID;
         });
 
+        Gate::define('create-user-all-branches', function ($user) {
+            return $user->group_id === self::AIPRO_CEO_GROUP_ID;
+        });
+
     }
 }
