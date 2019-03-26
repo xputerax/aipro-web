@@ -221,11 +221,11 @@ class CustomerController extends Controller
             ],
             'phone' => [
                 'required',
-                'max:15',
+                'max:20',
             ],
             'ic_number' => [
                 'required',
-                'max:15',
+                'max:20',
             ],
             'sex' => [
                 'required',
