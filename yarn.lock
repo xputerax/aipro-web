@@ -7051,9 +7051,9 @@ v8-compile-cache@^2.0.2:
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.0.2.tgz#a428b28bb26790734c4fc8bc9fa106fccebf6a6c"
   integrity sha512-1wFuMUIM16MDJRCrpbpuEPTUGmM5QMUg0cr3KFwra2XgOgFcPGDQHDh3CszSCD2Zewc/dh/pamNEW8CbfDebUw==
 
-validator@yairEO/validator#^1.0.6:
-  version "0.0.0"
-  resolved "https://codeload.github.com/yairEO/validator/tar.gz/f855eb37c626f2ad712583d25afdd30147a40d8e"
+validator@yairEO/validator#^3.3.5:
+  version "3.3.4"
+  resolved "https://codeload.github.com/yairEO/validator/tar.gz/01a570d68fa748f87a6a90166f157a64225e9e4d"
 
 vary@~1.1.2:
   version "1.1.2"
