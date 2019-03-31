@@ -21,14 +21,14 @@ class BrandController extends Controller
     {
         Auth::user()->can('list-brand', Brand::class) ?: abort(403);
 
-        $brands = Brand::where(function ($query) {
-            if (Auth::user()->cannot('get-brands-all-branches')) {
-                $query->where('branch_id', Auth::user()->branch_id);
-            }
-        })
+        $brands = Brand::orderBy('name', 'ASC')
+            ->where(function ($query) {
+                if (Auth::user()->cannot('get-brands-all-branches')) {
+                    $query->where('branch_id', Auth::user()->branch_id);
+                }
+            })
             ->latest()
-            ->get()
-        ;
+            ->get();
 
         return view('brand.index', compact('brands'));
     }
