@@ -48,7 +48,9 @@
                     <li><a><i class="fa fa-briefcase"></i> Order<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(Auth::user()->can('list-order'))
-                            <li><a href="{{ route('orders.index') }}">Order List</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'pending']) }}">Pending</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'resolved']) }}">Resolved</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'delivered']) }}">Delivered</a></li>
                             @endif
                         </ul>
                     </li>
