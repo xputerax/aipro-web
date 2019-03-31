@@ -24,11 +24,6 @@
                             <i class="fa fa-home"></i> Home
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('profile') }}">
-                            <i class="fa fa-user"></i> Profile
-                        </a>
-                    </li>
 
                     @if(Auth::user()->can('list-customer') || Auth::user()->can('create-customer'))
                     <li><a><i class="fa fa-users"></i> Customer<span class="fa fa-chevron-down"></span></a>
@@ -110,11 +105,6 @@
                     </li>
                     @endif
 
-                    <li>
-                        <a href="{{ route('logout') }}">
-                            <i class="fa fa-sign-out"></i> Logout
-                        </a>
-                    </li>
                 </ul> <!-- end .nav .side-menu -->
             </div> <!-- end div.menu_section -->
 

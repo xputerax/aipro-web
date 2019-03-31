@@ -8,18 +8,14 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                    <a href="javascript:void(0);" class="user-profile">
+                    <a href="javascript:void(0);" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->full_name }}
-                    </a>
-                    {{-- <a href="javascript:void(0);" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="../src/images/img.jpg" alt=""> 
-                         echo $user_fullname;
                         <span class="fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="#"><i class="fa fa-smile-o pull-right"></i> Profile</a></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                    </ul> --}}
+                        <li><a href="{{ route('profile') }}"> Profile</a></li>
+                        <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav>
