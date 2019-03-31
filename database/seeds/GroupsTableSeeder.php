@@ -21,17 +21,9 @@ class GroupsTableSeeder extends Seeder
                 'description' => 'AiPro Manager'
             ],
             [
-                'name' => 'clerk',
-                'description' => 'AiPro Clerk'
-            ],
-            [
-                'name' => 'sales',
-                'description' => 'AiPro Sales'
-            ],
-            [
-                'name' => 'repair',
-                'description' => 'AiPro Repair Person'
-            ],
+                'name' => 'staff',
+                'description' => 'AiPro Staff'
+            ]
         ]);
     }
 }

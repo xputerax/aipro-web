@@ -9,9 +9,7 @@ class UsersTableSeeder extends Seeder
 {
     const CEO_GROUP_ID = 1;
     const MANAGER_GROUP_ID = 2;
-    const CLERK_GROUP_ID = 3;
-    const SALES_GROUP_ID = 4;
-    const REPAIR_GROUP_ID = 5;
+    const STAFF_GROUP_ID = 3;
 
     /**
      * Run the database seeds.
@@ -54,32 +52,14 @@ class UsersTableSeeder extends Seeder
                 'created_at' => $date
             ],
             [
-                'email' => 'aiproclerk@gmail.com',
-                'username' => 'clerk',
-                'full_name' => 'AiPro Clerk',
+                'email' => 'aiprostaff@gmail.com',
+                'username' => 'staff',
+                'full_name' => 'AiPro Staff',
                 'password' => '123456',
-                'group_id' => self::CLERK_GROUP_ID,
+                'group_id' => self::STAFF_GROUP_ID,
                 'branch_id' => '1',
                 'created_at' => $date
-            ],
-            [
-                'email' => 'aiprosales@gmail.com',
-                'username' => 'sales',
-                'full_name' => 'AiPro Sales',
-                'password' => '123456',
-                'group_id' => self::SALES_GROUP_ID,
-                'branch_id' => '1',
-                'created_at' => $date
-            ],
-            [
-                'email' => 'aiprorepair@gmail.com',
-                'username' => 'repair',
-                'full_name' => 'AiPro Repair',
-                'password' => '123456',
-                'group_id' => self::REPAIR_GROUP_ID,
-                'branch_id' => '1',
-                'created_at' => $date
-            ],
+            ]
         ]);
     }
 }

@@ -9,9 +9,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     const AIPRO_CEO_GROUP_ID = 1;
     const AIPRO_MANAGER_GROUP_ID = 2;
-    const AIPRO_CLERK_GROUP_ID = 3;
-    const AIPRO_SALES_GROUP_ID = 4;
-    const AIPRO_REPAIR_GROUP_ID = 5;
+    const AIPRO_STAFF_GROUP_ID = 3;
 
     /**
      * The policy mappings for the application.
