@@ -25,14 +25,14 @@
 
             @csrf
 
-            <!-- start email section -->
+            <!-- start full name section -->
             <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="full_name">Full Name</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="email" name="email" value="@if(isset($user)){{ $user->email }}@endif" class="form-control col-md-7 col-xs-12">
+                    <input type="text" name="full_name" value="@if(isset($user)){{ $user->full_name }}@endif" class="form-control col-md-7 col-xs-12">
                 </div>
             </div>
-            <!-- end email section -->
+            <!-- end full name section -->
 
             <!-- start username section -->
             <div class="form-group">
@@ -43,15 +43,6 @@
             </div>
             <!-- end username section -->
 
-            <!-- start full name section -->
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="full_name">Full Name</label>
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input type="text" name="full_name" value="@if(isset($user)){{ $user->full_name }}@endif" class="form-control col-md-7 col-xs-12">
-                </div>
-            </div>
-            <!-- end full name section -->
-
             <!-- start password section -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password</label>
@@ -60,6 +51,15 @@
                 </div>
             </div>
             <!-- end password section -->
+
+            <!-- start email section -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="email" name="email" value="@if(isset($user)){{ $user->email }}@endif" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <!-- end email section -->
 
             <!-- start group section -->
             <div class="form-group">
