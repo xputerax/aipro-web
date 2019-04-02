@@ -3,7 +3,7 @@
 @section('title', 'Branch List')
 @section('breadcrumbs', Breadcrumbs::render('branch-index'))
 
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 <div class="row">
