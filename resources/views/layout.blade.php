@@ -1,5 +1,5 @@
 @php
-    $parse_body_tag = isset($parse_body_tag) ? $parse_body_tag : true;
+    $parse_body_tag = isset($parse_body_tag) ? $parse_body_tag : false;
 @endphp
 <!DOCTYPE html>
 <html lang="en">
