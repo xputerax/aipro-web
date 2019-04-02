@@ -37,7 +37,7 @@ class OrderController extends Controller
 
         $orders = $orders->where('status', $status)->latest()->paginate(self::ORDERS_PER_PAGE);
 
-        return view('order.index', compact('orders'));
+        return view('order.index', compact('orders', 'status'));
     }
 
     /**
