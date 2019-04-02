@@ -1,14 +1,13 @@
 @extends('backend-layout')
 
 @php
-    $parse_body_tag = false;
     $total_price = 0;
 @endphp
 
 @section('title', 'Viewing Customer Cart: '.$customer->full_name)
 @section('breadcrumbs', Breadcrumbs::render('cart', $customer))
 
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 <div class="row">
