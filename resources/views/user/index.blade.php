@@ -3,7 +3,7 @@
 @section('title', 'User List')
 @section('breadcrumbs', Breadcrumbs::render('user-index'))
 
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 <div class="row">
@@ -63,16 +63,4 @@
         {{ $users->links() }}
     </div>
 </div>
-@endsection
-
-@section('scripts')
-@parent
-@include('datatables')
-
-<script>
-    $(function () {
-
-    });
-
-</script>
 @endsection
