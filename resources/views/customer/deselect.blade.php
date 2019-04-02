@@ -1,13 +1,9 @@
 @extends('backend-layout')
 
 @section('title', 'Deselect Customer')
-@section('breadcrumbs', Breadcrumbs::render('customer-deselect'));
+@section('breadcrumbs', Breadcrumbs::render('customer-deselect'))
 
-@php
-    $parse_body_tag = false;
-@endphp
-
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 @if(isset($customer))
