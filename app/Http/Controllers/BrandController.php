@@ -100,7 +100,15 @@ class BrandController extends Controller
     {
         Auth::user()->can('edit-brand', $brand) ?: abort(403);
 
-        return view('brand.form', compact('brand'));
+        $data = [
+            'brand' => $brand,
+        ];
+
+        if (Auth::user()->can('add-brand-all-branches')) {
+            $data['branches'] = Branch::all();
+        }
+
+        return view('brand.form', $data);
     }
 
     /**
