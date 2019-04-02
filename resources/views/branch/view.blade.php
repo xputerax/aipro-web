@@ -1,10 +1,11 @@
 @extends('backend-layout')
 
-@section('title')
-Viewing Branch {{ $branch->name }}
-@endsection
+@section('title', 'Viewing Branch '.$branch->name)
+@section('breadcrumbs', Breadcrumbs::render('branch-show', $branch));
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <div class="x_content">
         <div class="form-horizontal form-label-left">

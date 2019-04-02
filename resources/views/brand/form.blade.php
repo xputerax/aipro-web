@@ -1,11 +1,11 @@
 @extends('backend-layout')
 
 @if(isset($brand))
-@section('title')
-Editing Brand {{ $brand->name }}
-@endsection
+    @section('title', 'Editing Brand '.$brand->name)
+    @section('breadcrumbs', Breadcrumbs::render('brand-edit', $brand))
 @else
-@section('title', 'Add New Brand')
+    @section('title', 'Add New Brand')
+    @section('breadcrumbs', Breadcrumbs::render('brand-create'))
 @endif
 
 @php
@@ -13,6 +13,8 @@ Editing Brand {{ $brand->name }}
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <div class="x_content">
 

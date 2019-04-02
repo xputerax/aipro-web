@@ -1,12 +1,15 @@
 @extends('backend-layout')
 
 @section('title', 'Brand List')
+@section('breadcrumbs', Breadcrumbs::render('brand-index'))
 
 @php
     $parse_body_tag = false;
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <table class="table table-bordered table-striped" id="brand_table">
     <thead>
         <tr>

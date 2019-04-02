@@ -2,10 +2,10 @@
 
 @if(Route::currentRouteName() === "users.create")
     @section('title', 'Add New User')
+    @section('breadcrumbs', Breadcrumbs::render('user-create'))
 @elseif(Route::currentRouteName() === "users.edit")
-    @section('title')
-    Edit User {{ $user->full_name }}
-    @endsection
+    @section('title', 'Edit User '.$user->full_name)
+    @section('breadcrumbs', Breadcrumbs::render('user-edit', $user))
 @endif
 
 @php
@@ -13,6 +13,7 @@
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
 <div class="x_panel">
     <div class="x_content">
 

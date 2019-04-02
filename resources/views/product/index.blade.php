@@ -6,7 +6,12 @@
     $parse_body_tag = false;
 @endphp
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('product-index') }}
+@endsection
+
 @section('content-1')
+@yield('breadcrumbs')
 <table class="table table-bordered table-striped" id="product_table">
     <thead>
         <tr>

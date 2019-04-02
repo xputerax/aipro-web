@@ -1,10 +1,11 @@
 @extends('backend-layout')
 
-@section('title')
-Viewing Brand {{ $brand->name }}
-@endsection
+@section('title', 'Viewing Brand '.$brand->name)
+@section('breadcrumbs', Breadcrumbs::render('brand-show', $brand))
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <h4>Products</h4>
 <table class="table table-bordered" id="products_table">
     <thead>

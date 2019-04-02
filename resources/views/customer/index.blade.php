@@ -1,18 +1,17 @@
 @extends('backend-layout')
 
 @section('title', 'Customer List')
+@section('breadcrumbs', Breadcrumbs::render('customer-index'))
 
 @php
     $parse_body_tag = false;    
 @endphp
 
-{{-- @section('stylesheets')
-@parent
-<link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
-@endsection --}}
-
 @section('content-1')
 {{-- <div class="x_panel"> --}}
+
+    @yield('breadcrumbs')
+    
     <div class="row">
         <div class="col-md-3 col-sm-3 col-xs-12">
             <form action="{{ route('customers.index') }}" method="get">

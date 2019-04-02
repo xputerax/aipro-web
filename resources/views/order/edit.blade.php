@@ -4,11 +4,12 @@
     $parse_body_tag = false
 @endphp
 
-@section('title')
-Editing Order #{{ $order->id }}
-@endsection
+@section('title', 'Editing Order #'.$order->id)
+@section('breadcrumbs', Breadcrumbs::render('order-edit', $order))
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <form action="{{ route('orders.update', compact('order')) }}" method="post" class="form-horizontal form-label-left">
         @csrf

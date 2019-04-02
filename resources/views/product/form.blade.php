@@ -1,11 +1,11 @@
 @extends('backend-layout')
 
 @if(isset($product))
-    @section('title')
-    Editing Product {{ $product->name }}
-    @endsection
+    @section('title', 'Editing Product '.$product->name)
+    @section('breadcrumbs', Breadcrumbs::render('product-edit', $product))
 @else
     @section('title', 'Add New Product')
+    @section('breadcrumbs', Breadcrumbs::render('product-create'))
 @endif
 
 @php
@@ -13,6 +13,8 @@
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <div class="x_content">
         

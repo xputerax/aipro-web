@@ -1,12 +1,14 @@
 @extends('backend-layout')
 
 @section('title', 'Deselect Customer')
+@section('breadcrumbs', Breadcrumbs::render('customer-deselect'));
 
 @php
     $parse_body_tag = false;
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
 
 @if(isset($customer))
 <form action="{{ route('customers.deselect') }}" method="get">

@@ -5,11 +5,12 @@
     $total_price = 0;
 @endphp
 
-@section('title')
-Viewing Customer Cart: {{ $customer->full_name }}
-@endsection
+@section('title', 'Viewing Customer Cart: '.$customer->full_name)
+@section('breadcrumbs', Breadcrumbs::render('cart', $customer))
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-striped">

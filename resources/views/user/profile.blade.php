@@ -1,12 +1,15 @@
 @extends('backend-layout')
 
 @section('title', 'My Profile')
+@section('breadcrumbs', Breadcrumbs::render('user-profile'))
 
 @php
     $parse_body_tag = false;
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <form action="{{ route('profile') }}" method="post" class="form-horizontal form-label-left">
         @csrf

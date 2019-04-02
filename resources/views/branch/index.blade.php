@@ -1,8 +1,11 @@
 @extends('backend-layout')
 
 @section('title', 'Branch List')
+@section('breadcrumbs', Breadcrumbs::render('branch-index'))
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="row">
     <div class="col-md-6">
         <form action="{{ route('branches.index') }}" method="get" class="form-inline">

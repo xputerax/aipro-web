@@ -6,7 +6,13 @@
     $parse_body_tag = false;
 @endphp
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('dashboard') }}
+@endsection
+
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="row tile_count">
     <div class="col-md-4 tile_stats_count">
         <span class="count_top"><i class="fa fa-money"></i> Today</span>

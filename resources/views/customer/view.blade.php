@@ -1,14 +1,15 @@
 @extends('backend-layout')
 
-@section('title')
-Viewing customer: {{ $customer->full_name }}
-@endsection
+@section('title', 'Viewing customer: '.$customer->full_name)
+@section('breadcrumbs', Breadcrumbs::render('customer-show', $customer))
 
 @php
     $parse_body_tag = false;    
 @endphp
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <div class="x_content">
         <div class="form-horizontal form-label-left">

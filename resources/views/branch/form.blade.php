@@ -1,14 +1,16 @@
 @extends('backend-layout')
 
 @if(Route::currentRouteName() == "branches.create")
-@section('title', 'Create New Branch')
+    @section('title', 'Create New Branch')
+    @section('breadcrumbs', Breadcrumbs::render('branch-create'))
 @elseif(Route::currentRouteName() == "branches.edit")
-@section('title')
-Editing Branch {{ $branch->name }}
-@endsection
+    @section('title', 'Editing Branch'.$branch->name)
+    @section('breadcrumbs', Breadcrumbs::render('branch-edit', $branch))
 @endif
 
 @section('content-1')
+@yield('breadcrumbs')
+
 <div class="x_panel">
     <div class="x_content">
 

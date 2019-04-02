@@ -3,10 +3,16 @@
 @section('title', 'Order List')
 
 @php
-    $parse_body_tag = false;    
+    $parse_body_tag = false;
 @endphp
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('order-'.$status) }}
+@endsection
+
 @section('content-1')
+@yield('breadcrumbs')
+
 <table class="table table-bordered table-striped" id="orders_table">
     <thead>
         <tr>
