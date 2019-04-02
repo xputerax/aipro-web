@@ -1,5 +1,14 @@
 @extends('backend-layout')
 
+@push('scripts')
+<script>
+$(function() {
+    let group_select = $("#group_select").select2();
+    let branch_select = $("#branch_select").select2();
+});
+</script>
+@endpush
+
 @if(isset($user))
     @section('title', 'Edit User '.$user->full_name)
     @section('breadcrumbs', Breadcrumbs::render('user-edit', $user))
@@ -23,7 +32,7 @@
     <!-- start full name section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="full_name">Full Name</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="text" name="full_name" class="form-control col-md-7 col-xs-12"
                 value="@if(isset($user)){{ $user->full_name }}@endif">
         </div>
@@ -33,7 +42,7 @@
     <!-- start username section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="text" name="username" class="form-control col-md-7 col-xs-12"
                 value="@if(isset($user)){{ $user->username }}@endif">
         </div>
@@ -43,7 +52,7 @@
     <!-- start password section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="password" name="password" class="form-control col-md-7 col-xs-12">
         </div>
     </div>
@@ -52,7 +61,7 @@
     <!-- start email section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="email" name="email" class="form-control col-md-7 col-xs-12"
                 value="@if(isset($user)){{ $user->email }}@endif">
         </div>
@@ -62,7 +71,7 @@
     <!-- start group section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="group">Group</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             @if($groups->count())
             <select name="group_id" id="group_select" class="form-control select2_single">
                 @foreach($groups as $group)
@@ -80,7 +89,7 @@
     <!-- start branch section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="branch_id">Branch</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             @if($branches->count())
             <select name="branch_id" id="branch_select" class="form-control select2_single">
                 @foreach($branches as $branch)
@@ -99,7 +108,7 @@
     <!-- start active/disabled section -->
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
-        <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <select name="status" class="form-control">
                 <option value="active">Active</option>
                 <option value="disabled" {{ (isset($user->deleted_at)) ? 'selected' : '' }}>Disabled</option>
@@ -128,12 +137,3 @@
 
 </form>
 @endsection
-
-@push('scripts')
-<script>
-$(function() {
-    let group_select = $("#group_select").select2();
-    let branch_select = $("#branch_select").select2();
-});
-</script>
-@endpush

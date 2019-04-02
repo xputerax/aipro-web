@@ -3,10 +3,6 @@
 @section('title', 'Customer List')
 @section('breadcrumbs', Breadcrumbs::render('customer-index'))
 
-@push('scripts')
-@include('datatables')
-@endpush
-
 @section('content')
 @yield('breadcrumbs')
 
