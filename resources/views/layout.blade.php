@@ -1,9 +1,9 @@
 @php
     $parse_body_tag = isset($parse_body_tag) ? $parse_body_tag : false;
 @endphp
-@push('stylesheets')
+@section('stylesheets')
 <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
-@endpush
+@endsection
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - {{ config('app.name') }}</title>
-    @stack('stylesheets')
+    @yield('stylesheets')
 </head>
 
 @if($parse_body_tag)
@@ -19,7 +19,7 @@
 @endif
 
     @yield('content')
-    @stack('scripts')
+    @yield('scripts')
 
 @if($parse_body_tag)
 </body>

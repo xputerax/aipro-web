@@ -3,7 +3,7 @@
 @section('title', 'Viewing Brand '.$brand->name)
 @section('breadcrumbs', Breadcrumbs::render('brand-show', $brand))
 
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 <h4>Products</h4>

@@ -1,13 +1,13 @@
 @extends('backend-layout')
 
-@push('scripts')
+@section('scripts')
 <script>
 $(function() {
     let group_select = $("#group_select").select2();
     let branch_select = $("#branch_select").select2();
 });
 </script>
-@endpush
+@endsection
 
 @if(isset($user))
     @section('title', 'Edit User '.$user->full_name)

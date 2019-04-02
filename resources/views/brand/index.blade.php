@@ -47,7 +47,9 @@
 </div>
 @endsection
 
-@push('scripts')
+@section('scripts')
+@parent
+
 @include('datatables')
 
 <script>
@@ -55,4 +57,4 @@ $(function() {
     $("#brand_table").DataTable();
 });
 </script>
-@endpush
+@endsection
