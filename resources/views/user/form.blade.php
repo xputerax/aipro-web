@@ -1,14 +1,5 @@
 @extends('backend-layout')
 
-@section('scripts')
-<script>
-$(function() {
-    let group_select = $("#group_select").select2();
-    let branch_select = $("#branch_select").select2();
-});
-</script>
-@endsection
-
 @if(isset($user))
     @section('title', 'Edit User '.$user->full_name)
     @section('breadcrumbs', Breadcrumbs::render('user-edit', $user))
@@ -136,4 +127,15 @@ $(function() {
     @endif
 
 </form>
+@endsection
+
+@section('scripts')
+@parent
+
+<script>
+$(function() {
+    let group_select = $("#group_select").select2();
+    let branch_select = $("#branch_select").select2();
+});
+</script>
 @endsection
