@@ -1,10 +1,10 @@
-@push('stylesheets')
+@section('stylesheets')
 <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
-@endpush
+@endsection
 
-@push('scripts')
+@section('scripts')
 <script src="{{ mix('js/backend.js') }}"></script>
-@endpush
+@endsection
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - {{ config('app.name') }}</title>
-    @stack('stylesheets')
+    @yield('stylesheets')
 </head>
 
 <body class="nav-md">
@@ -37,5 +37,5 @@
     </div> <!-- end .container .body -->
 </body>
 
-@stack('scripts')
+@yield('scripts')
 </html>
