@@ -2,15 +2,9 @@
 
 @section('title', 'Dashboard')
 
-@php
-    $parse_body_tag = false;
-@endphp
+@section('breadcrumbs', Breadcrumbs::render('dashboard'))
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('dashboard') }}
-@endsection
-
-@section('content-1')
+@section('content')
 @yield('breadcrumbs')
 
 <div class="row tile_count">
