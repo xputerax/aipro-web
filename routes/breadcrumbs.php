@@ -86,7 +86,6 @@ Breadcrumbs::for('order-edit', function ($trail, $order) {
  * Branch
  */
 Breadcrumbs::for('branch-index', function ($trail) {
-    $trail->parent('selected-branch');
     $trail->push('Branch', route('branches.index'));
 });
 
