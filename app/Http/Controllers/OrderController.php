@@ -22,20 +22,22 @@ class OrderController extends Controller
     {
         Auth::user()->can('list-order', Order::class) ?: abort(403);
 
-        $statuses = ['pending', 'delivered', 'resolved'];
-        $orders = Order::where(function ($query) {
-            if (Auth::user()->cannot('list-orders-all-branches')) {
-                $query->where('branch_id', Auth::user()->branch_id);
-            }
-        });
+        $status = function() use ($request) {
+            return $request->has('status') &&
+                in_array($request->query('status'), ['pending', 'delivered', 'resolved'])
+                ? $request->query('status')
+                : 'pending';
+        };
 
-        if ($request->has('status') && in_array($request->query('status'), $statuses)) {
-            $status = $request->query('status');
-        } else {
-            $status = 'pending';
-        }
-
-        $orders = $orders->where('status', $status)->latest()->paginate(self::ORDERS_PER_PAGE);
+        $orders = Order::where('status', $status())
+            ->where(
+                'branch_id',
+                $request->session()->get(
+                    'selected_branch_id', Auth::user()->branch_id
+                )
+            )
+            ->latest()
+            ->paginate(self::ORDERS_PER_PAGE);
 
         return view('order.index', compact('orders', 'status'));
     }
