@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 class BranchController extends Controller
 {
@@ -159,5 +160,18 @@ class BranchController extends Controller
     protected function validateData($request)
     {
         return $request->validate($this->validationRules());
+    }
+
+    /**
+     * Select the specified branch
+     *
+     * @param Branch $branch
+     * @return Response
+     */
+    public function select(Request $request, Branch $branch)
+    {
+        $request->session()->put('selected_branch_id', $branch->id);
+
+        return redirect()->route('dashboard');
     }
 }

@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('branches', 'BranchController');
 
+    Route::get('branches/{branch}/select', 'BranchController@select')->name('branches.select');
+
     Route::resource('products', 'ProductController');
 
     Route::resource('brands', 'BrandController');

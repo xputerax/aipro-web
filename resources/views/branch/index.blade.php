@@ -28,6 +28,9 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    @can('select-branch')
+                    <th>Action</th>
+                    @endcan
                 </tr>
             </thead>
 
@@ -40,6 +43,13 @@
                             {{ $branch->name }}
                         </a>
                     </td>
+                    @can('select-branch')
+                    <td>
+                        <a href="{{ route('branches.select', compact('branch')) }}" class="btn btn-primary">
+                            Select
+                        </a>
+                    </td>
+                    @endcan
                 </tr>
                 @endforeach
                 @else
