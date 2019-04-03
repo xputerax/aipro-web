@@ -21,7 +21,7 @@ class BranchesTableSeeder extends Seeder
         ]);
 
         if (App::environment('local') || App::environment('development')) {
-            factory(App\Branch::class, 100)->create();
+            factory(\App\Branch::class, 100)->create();
         }
     }
 }
