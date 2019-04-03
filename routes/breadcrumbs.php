@@ -1,10 +1,23 @@
 <?php
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
+
+/**
+ * Selected Branch
+ */
+Breadcrumbs::for('selected-branch', function ($trail) {
+    $session = session();
+    $branch_id = $session->get('selected_branch_id', Auth::user()->branch_id);
+    $branch = App\Branch::find($branch_id);
+
+    $trail->push($branch->name, route('branches.index'));
+});
+
 /**
  * Dashboard
  */
 Breadcrumbs::for('dashboard', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Dashboard', route('dashboard'));
 });
 
@@ -12,6 +25,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
  * Customer
  */
 Breadcrumbs::for('customer-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Customer', route('customers.index'));
 });
 
@@ -44,6 +58,7 @@ Breadcrumbs::for('customer-edit', function ($trail, $customer) {
  * Order
  */
 Breadcrumbs::for('order-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Order', route('orders.index'));
 });
 
@@ -71,6 +86,7 @@ Breadcrumbs::for('order-edit', function ($trail, $order) {
  * Branch
  */
 Breadcrumbs::for('branch-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Branch', route('branches.index'));
 });
 
@@ -93,6 +109,7 @@ Breadcrumbs::for('branch-edit', function ($trail, $branch) {
  * User
  */
 Breadcrumbs::for('user-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('User', route('users.index'));
 });
 
@@ -107,6 +124,7 @@ Breadcrumbs::for('user-edit', function ($trail, $user) {
 });
 
 Breadcrumbs::for('user-profile', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('My Profile', route('profile'));
 });
 
@@ -114,6 +132,7 @@ Breadcrumbs::for('user-profile', function ($trail) {
  * Brand
  */
 Breadcrumbs::for('brand-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Brand', route('brands.index'));
 });
 
@@ -131,6 +150,7 @@ Breadcrumbs::for('brand-show', function ($trail, $brand) {
  * Product
  */
 Breadcrumbs::for('product-index', function ($trail) {
+    $trail->parent('selected-branch');
     $trail->push('Product', route('products.index'));
 });
 
