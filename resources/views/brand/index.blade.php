@@ -13,9 +13,6 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    @can('get-brands-all-branches')
-                    <th>Branch</th>
-                    @endcan
                 </tr>
             </thead>
 
@@ -27,18 +24,11 @@
                         <a href="{{ route('brands.show', compact('brand')) }}">{{ $brand->name }}</a>
                     </td>
                     <td>{{ $brand->description ?? '-' }}</td>
-                    @can('get-brands-all-branches')
-                    <td>{{ $brand->branch->name }}</td>
-                    @endcan
                 </tr>
             @endforeach
             @else
                 <tr>
-                    @can('get-brands-all-branches')
-                    <td colspan="3">No Data</td>
-                    @elsecan
                     <td colspan="2">No Data</td>
-                    @endcan
                 </tr>
             @endif
             </tbody>
