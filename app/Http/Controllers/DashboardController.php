@@ -25,7 +25,7 @@ class DashboardController extends Controller
             ->whereRaw('DATE(created_at) = ?', [
                 $todays_date->toDateString(),
             ])
-            ->where('branch_id', $request->session()->get('selected_branch_id', $user->branch_id))
+            ->where('branch_id', $request->session()->get('selected_branch_id'))
             ->first();
 
         $sales_month = DB::table('order_payments')
@@ -33,7 +33,7 @@ class DashboardController extends Controller
             ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [
                 $todays_date->format('Y-m'),
             ])
-            ->where('branch_id', $request->session()->get('selected_branch_id', $user->branch_id))
+            ->where('branch_id', $request->session()->get('selected_branch_id'))
             ->first();
 
         $sales_year = DB::table('order_payments')
@@ -41,7 +41,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(created_at) = ?', [
                 $todays_date->format('Y'),
             ])
-            ->where('branch_id', $request->session()->get('selected_branch_id', $user->branch_id))
+            ->where('branch_id', $request->session()->get('selected_branch_id'))
             ->first();
 
         $sales = [
