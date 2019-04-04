@@ -6,9 +6,7 @@ use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
  * Selected Branch
  */
 Breadcrumbs::for('selected-branch', function ($trail) {
-    $session = session();
-    $branch_id = $session->get('selected_branch_id', Auth::user()->branch_id);
-    $branch = App\Branch::find($branch_id);
+    $branch = App\Branch::find(session()->get('selected_branch_id'));
 
     $trail->push($branch->name, route('branches.index'));
 });
