@@ -22,11 +22,7 @@ class BrandController extends Controller
         Auth::user()->can('list-brand', Brand::class) ?: abort(403);
 
         $brands = Brand::orderBy('name', 'ASC')
-            ->where(function ($query) {
-                if (Auth::user()->cannot('get-brands-all-branches')) {
-                    $query->where('branch_id', Auth::user()->branch_id);
-                }
-            })
+            ->where('branch_id', session()->get('selected_branch_id'))
             ->latest()
             ->get();
 
@@ -195,7 +191,9 @@ class BrandController extends Controller
     {
         return array_merge(
             $request->all(),
-            Auth::user()->cannot('add-brand-all-branches') ? ['branch_id' => Auth::user()->branch_id] : []
+            Auth::user()->cannot('add-brand-all-branches')
+                ? ['branch_id' => $request->session()->get('selected_branch_id')]
+                : []
         );
     }
 
