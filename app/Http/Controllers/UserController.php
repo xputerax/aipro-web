@@ -23,17 +23,14 @@ class UserController extends Controller
     {
         Auth::user()->can('list-user', User::class) ?: abort(403);
 
-        if (Auth::user()->can('search-users-across-branches')) {
-            $users = new User();
-        } else {
-            $users = User::where('branch_id', Auth::user()->branch_id);
-        }
-
-        if ($request->has('name')) {
-            $users = $users->where('full_name', 'like', '%'.$request->name.'%');
-        }
-
-        $users = $users->withTrashed()->paginate(self::USERS_PER_PAGE);
+        $users = User::where('branch_id', $request->session()->get('selected_branch_id'))
+            ->where(function ($query) use ($request) {
+                if ($request->has('name')) {
+                    $query->where('full_name', 'like', '%'.$request->name.'%');
+                }
+            })
+            ->withTrashed()
+            ->paginate(self::USERS_PER_PAGE);
 
         return view('user.index', compact('users', 'request'));
     }
