@@ -38,13 +38,7 @@ class BrandController extends Controller
     {
         Auth::user()->can('create-brand', Brand::class) ?: abort(403);
 
-        $data = [];
-
-        if (Auth::user()->can('add-brand-all-branches')) {
-            $data['branches'] = Branch::all();
-        }
-
-        return view('brand.form', $data);
+        return view('brand.form');
     }
 
     /**
@@ -96,15 +90,7 @@ class BrandController extends Controller
     {
         Auth::user()->can('edit-brand', $brand) ?: abort(403);
 
-        $data = [
-            'brand' => $brand,
-        ];
-
-        if (Auth::user()->can('add-brand-all-branches')) {
-            $data['branches'] = Branch::all();
-        }
-
-        return view('brand.form', $data);
+        return view('brand.form', compact('brand'));
     }
 
     /**
@@ -191,9 +177,7 @@ class BrandController extends Controller
     {
         return array_merge(
             $request->all(),
-            Auth::user()->cannot('add-brand-all-branches')
-                ? ['branch_id' => $request->session()->get('selected_branch_id')]
-                : []
+            ['branch_id' => $request->session()->get('selected_branch_id')]
         );
     }
 
