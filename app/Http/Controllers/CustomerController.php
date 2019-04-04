@@ -19,21 +19,15 @@ class CustomerController extends Controller
     {
         Auth::user()->can('list-customer', Customer::class) ?: abort(403);
 
-        $customers = Customer::where(function ($query) {
-            if (Auth::user()->cannot('list-customers-all-branches')) {
-                $query->where('branch_id', Auth::user()->branch_id);
-            }
-        });
-
-        if ($request->has('full_name')) {
-            $full_name = $request->full_name;
-            $customers = $customers->where('full_name', 'like', '%'.$full_name.'%');
-        }
-
-        $customers = $customers
+        $customers = Customer::where('branch_id', $request->session()->get('selected_branch_id'))
+            ->where(function ($query) use ($request) {
+                if ($request->has('full_name')) {
+                    $full_name = $request->full_name;
+                    $query->where('full_name', 'like', '%'.$full_name.'%');
+                }
+            })
             ->latest()
-            ->paginate(self::CUSTOMERS_PER_PAGE)
-        ;
+            ->paginate(self::CUSTOMERS_PER_PAGE);
 
         return view('customer.index', compact('customers', 'request'));
     }
