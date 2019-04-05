@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('user', function ($id) {
-            return App\User::withTrashed()->findOrFail($id);
+            return \App\User::withTrashed()->findOrFail($id);
         });
     }
 
