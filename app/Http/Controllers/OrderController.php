@@ -22,14 +22,14 @@ class OrderController extends Controller
     {
         Auth::user()->can('list-order', Order::class) ?: abort(403);
 
-        $status = function() use ($request) {
+        $status = (function() use ($request) {
             return $request->has('status') &&
                 in_array($request->query('status'), ['pending', 'delivered', 'resolved'])
                 ? $request->query('status')
                 : 'pending';
-        };
+        })();
 
-        $orders = Order::where('status', $status())
+        $orders = Order::where('status', $status)
             ->where(
                 'branch_id',
                 $request->session()->get('selected_branch_id')
