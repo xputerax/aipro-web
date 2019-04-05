@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -45,9 +46,8 @@ class UserController extends Controller
         Auth::user()->can('create-user', User::class) ?: abort(403);
 
         $groups = Group::all();
-        $branches = Branch::all();
 
-        return view('user.form', compact('groups', 'branches'));
+        return view('user.form', compact('groups'));
     }
 
     /**
@@ -98,9 +98,8 @@ class UserController extends Controller
         Auth::user()->can('edit-user', $user) ?: abort(403);
 
         $groups = Group::all();
-        $branches = Branch::all();
 
-        return view('user.form', compact('user', 'groups', 'branches'));
+        return view('user.form', compact('user', 'groups'));
     }
 
     /**
@@ -171,14 +170,14 @@ class UserController extends Controller
                 'required',
                 'exists:groups,id',
             ],
-            'branch_id' => [
-                'sometimes',
-                'exists:branches,id',
-            ],
             'status' => [
                 'required',
                 'in:active,disabled',
             ],
+            'branch_id' => [
+                'required',
+                'exists:branches,id'
+            ]
         ];
 
         if (isset($user)) {
@@ -203,12 +202,43 @@ class UserController extends Controller
      */
     public function validateData($request, $user = null)
     {
-        $data = $request->validate($this->validationRules($user));
+        $validator = $this->makeValidator($request, $user);
 
-        if (!isset($data['password'])) {
+        $data = $validator->validate();
+
+        if ($data['password'] === null) {
             unset($data['password']);
         }
 
         return $data;
+    }
+
+    /**
+     * Get the request data with branch id
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    protected function requestData($request)
+    {
+        return array_merge(
+            $request->all(),
+            ['branch_id' => $request->session()->get('selected_branch_id')]
+        );
+    }
+
+    /**
+     * Make the validator instance
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\User|null $user
+     * @return \Illuminate\Validation\Validator
+     */
+    protected function makeValidator($request, $user = null)
+    {
+        return Validator::make(
+            $this->requestData($request),
+            $this->validationRules($user)
+        );
     }
 }
