@@ -13,16 +13,6 @@ class CartController extends Controller
     /**
      * Show the customer cart page.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('cart.index');
-    }
-
-    /**
-     * Show the customer cart page.
-     *
      * @param \App\Customer $customer
      *
      * @return \Illuminate\Http\Response
