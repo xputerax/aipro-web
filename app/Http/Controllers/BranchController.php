@@ -20,13 +20,13 @@ class BranchController extends Controller
     {
         Auth::user()->can('list-branch', Branch::class) ?: abort(403);
 
-        $branches = Branch::orderBy('id', 'asc');
-
-        if ($request->has('name')) {
-            $branches = $branches->where('name', 'like', '%'.$request->name.'%');
-        }
-
-        $branches = $branches->paginate(self::BRANCHES_PER_PAGE);
+        $branches = Branch::orderBy('id', 'asc')
+            ->where(function ($query) use ($request) {
+                if ($request->has('name')) {
+                    $query->where('name', 'like', '%'.$request->name.'%');
+                }
+            })
+            ->paginate(self::BRANCHES_PER_PAGE);
 
         return view('branch.index', compact('branches', 'request'));
     }
