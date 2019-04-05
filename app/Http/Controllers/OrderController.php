@@ -30,10 +30,7 @@ class OrderController extends Controller
         })();
 
         $orders = Order::where('status', $status)
-            ->where(
-                'branch_id',
-                $request->session()->get('selected_branch_id')
-            )
+            ->where('branch_id', $request->session()->get('selected_branch_id'))
             ->latest()
             ->paginate(self::ORDERS_PER_PAGE);
 
