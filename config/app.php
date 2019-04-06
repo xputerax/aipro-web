@@ -230,7 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\BreadcrumbsManager::class
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class
 
     ],
 
