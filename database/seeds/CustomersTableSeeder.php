@@ -12,8 +12,8 @@ class CustomersTableSeeder extends Seeder
      */
     public function run()
     {
-        if(App::environment('local') || App::environment('development')) {
-            factory(\App\Customer::class, 1000)->create();
-        }
+        if (App::environment('production')) return;
+
+        factory(\App\Customer::class, 1000)->create();
     }
 }
