@@ -61,5 +61,18 @@ class UsersTableSeeder extends Seeder
                 'created_at' => $date
             ]
         ]);
+
+        foreach (\App\Branch::all() as $branch) {
+            // add manager to each branch
+            factory(\App\User::class)->create([
+                'branch_id' => $branch->id,
+                'group_id' => 2
+            ]);
+
+            // add staff to each branch
+            factory(\App\User::class, 100)->create([
+                'branch_id' => $branch_id
+            ]);
+        }
     }
 }
