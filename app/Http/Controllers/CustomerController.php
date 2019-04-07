@@ -15,21 +15,11 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         Auth::user()->can('list-customer', Customer::class) ?: abort(403);
 
-        $customers = Customer::where('branch_id', $request->session()->get('selected_branch_id'))
-            ->where(function ($query) use ($request) {
-                if ($request->has('full_name')) {
-                    $full_name = $request->full_name;
-                    $query->where('full_name', 'like', '%'.$full_name.'%');
-                }
-            })
-            ->latest()
-            ->paginate(self::CUSTOMERS_PER_PAGE);
-
-        return view('customer.index', compact('customers', 'request'));
+        return view('customer.index');
     }
 
     /**
