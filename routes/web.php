@@ -54,4 +54,10 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('payments/{payment}', 'PaymentController@destroy')->name('payments.destroy');
 
+    Route::prefix('api')->group(function () {
+
+        Route::get('customers', 'CustomerApiController')->name('api.customers.index');
+
+    });
+
 });
