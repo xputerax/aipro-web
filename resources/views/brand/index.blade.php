@@ -17,20 +17,6 @@
             </thead>
 
             <tbody>
-            @if($brands->count())
-            @foreach($brands as $brand)
-                <tr>
-                    <td>
-                        <a href="{{ route('brands.show', compact('brand')) }}">{{ $brand->name }}</a>
-                    </td>
-                    <td>{{ $brand->description ?? '-' }}</td>
-                </tr>
-            @endforeach
-            @else
-                <tr>
-                    <td colspan="2">No Data</td>
-                </tr>
-            @endif
             </tbody>
         </table>
     </div>
@@ -44,7 +30,21 @@
 
 <script>
 $(function() {
-    $("#brand_table").DataTable();
+    $("#brand_table").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('api.brands.index') }}',
+        columns: [
+            {
+                data: 'name',
+                render: function (data, type, row, meta) {
+                    return `<a href="{{ url('/') }}/brands/${row.id}">${row.name}</a>`;
+                }
+            },
+            { data: 'description', defaultContent: '-' }
+        ],
+        paging: true
+    });
 });
 </script>
 @endsection

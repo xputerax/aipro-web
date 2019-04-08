@@ -21,12 +21,7 @@ class BrandController extends Controller
     {
         Auth::user()->can('list-brand', Brand::class) ?: abort(403);
 
-        $brands = Brand::orderBy('name', 'ASC')
-            ->where('branch_id', session()->get('selected_branch_id'))
-            ->latest()
-            ->get();
-
-        return view('brand.index', compact('brands'));
+        return view('brand.index');
     }
 
     /**

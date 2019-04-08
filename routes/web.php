@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('branches', 'BranchApiController')->name('api.branches.index');
 
+        Route::get('brands', 'BrandApiController')->name('api.brands.index');
+
     });
 
 });
