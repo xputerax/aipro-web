@@ -35,7 +35,12 @@ $(function () {
         serverSide: true,
         ajax: '{{ route('api.customers.index') }}',
         columns: [
-            { data: 'full_name' },
+            {
+                data: 'full_name',
+                render: function (data, type, row, meta) {
+                    return `<a href="{{ url('/') }}/customers/${row.id}">${row.full_name}</a>`;
+                }
+            },
             { data: 'phone' },
             {
                 data: 'ic_number',
@@ -44,9 +49,11 @@ $(function () {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `<a href="{{ url('/') }}/customers/${row.id}/select" class="btn btn-primary">Select</a>`;
-                }
+                },
+                searchable: false
             }
-        ]
+        ],
+        paging: true
     });
 });
 </script>
