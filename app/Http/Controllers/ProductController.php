@@ -18,12 +18,7 @@ class ProductController extends Controller
     {
         Auth::user()->can('list-product', Product::class) ?: abort(403);
 
-        $products = Product::where('branch_id', session('selected_branch_id'))
-            ->latest()
-            ->get()
-        ;
-
-        return view('product.index', compact('products'));
+        return view('product.index');
     }
 
     /**
