@@ -20,20 +20,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         Auth::user()->can('list-user', User::class) ?: abort(403);
 
-        $users = User::where('branch_id', $request->session()->get('selected_branch_id'))
-            ->where(function ($query) use ($request) {
-                if ($request->has('name')) {
-                    $query->where('full_name', 'like', '%'.$request->name.'%');
-                }
-            })
-            ->withTrashed()
-            ->paginate(self::USERS_PER_PAGE);
-
-        return view('user.index', compact('users', 'request'));
+        return view('user.index');
     }
 
     /**
