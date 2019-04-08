@@ -16,19 +16,11 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         Auth::user()->can('list-branch', Branch::class) ?: abort(403);
 
-        $branches = Branch::orderBy('id', 'asc')
-            ->where(function ($query) use ($request) {
-                if ($request->has('name')) {
-                    $query->where('name', 'like', '%'.$request->name.'%');
-                }
-            })
-            ->paginate(self::BRANCHES_PER_PAGE);
-
-        return view('branch.index', compact('branches', 'request'));
+        return view('branch.index');
     }
 
     /**

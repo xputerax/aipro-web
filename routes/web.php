@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('customers', 'CustomerApiController')->name('api.customers.index');
 
+        Route::get('branches', 'BranchApiController')->name('api.branches.index');
+
     });
 
 });
