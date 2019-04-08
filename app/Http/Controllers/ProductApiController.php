@@ -17,10 +17,10 @@ class ProductApiController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $users = Product::with('brand')
+        $products = Product::with('brand')
             ->where('branch_id', $request->session()->get('selected_branch_id'))
             ->get();
-        $resource = ProductResource::collection($users);
+        $resource = ProductResource::collection($products);
 
         return DataTables::of($resource)->toJson();
     }
