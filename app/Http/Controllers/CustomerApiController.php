@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 use App\Customer;
+use Yajra\DataTables\DataTables;
+use App\Http\Resources\UserResource;
 
 class CustomerApiController extends Controller
 {
@@ -16,9 +17,12 @@ class CustomerApiController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $customers = Customer::select(['id', 'full_name', 'phone', 'ic_number'])
-            ->where('branch_id', session('selected_branch_id'));
+        $customers = Customer::where('branch_id', session('selected_branch_id'))
+            ->select(['id', 'full_name', 'phone', 'ic_number'])
+            ->get();
 
-        return DataTables::of($customers)->make(true);
+        $resource = UserResource::collection($customers);
+
+        return DataTables::of($resource)->make(true);
     }
 }
