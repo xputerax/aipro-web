@@ -29,12 +29,7 @@ class OrderController extends Controller
                 : 'pending';
         })();
 
-        $orders = Order::where('status', $status)
-            ->where('branch_id', $request->session()->get('selected_branch_id'))
-            ->latest()
-            ->paginate(self::ORDERS_PER_PAGE);
-
-        return view('order.index', compact('orders', 'status'));
+        return view('order.index', compact('status'));
     }
 
     /**

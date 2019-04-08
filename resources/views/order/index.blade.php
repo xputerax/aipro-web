@@ -19,34 +19,43 @@
             </thead>
 
             <tbody>
-            @if($orders->count())
-                @foreach($orders as $order)
-                <tr>
-                    <td>
-                        <a href="{{ route('orders.show', compact('order')) }}">
-                            {{ $order->customer->full_name }}
-                        </a>
-                    </td>
-                    <td>{{ $order->status }}</td>
-                    <td>{{ $order->created_at }}</td>
-                    <td>
-                        <a href="{{ route('orders.edit', compact('order')) }}" class="btn btn-primary">Edit</a>
-                    </td>
-                </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="4">No data</td>
-                </tr>
-            @endif
             </tbody>
         </table>
     </div>
 </div>
+@endsection
 
-<div class="row">
-    <div class="col-md-12">
-        {{ $orders->links() }}
-    </div>
-</div>
+@section('scripts')
+@parent
+
+<script>
+$(function () {
+    $("#orders_table").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('api.orders.index') }}?status={{ $status }}',
+        columns: [
+            {
+                data: 'id',
+                render: function (data, type, row, meta) {
+                    console.log(data, type, row, meta);
+                    return `<a href="{{ url('/') }}/orders/${data}">${row.customer.full_name}</a>`;
+                }
+            },
+            {
+                data: 'status'
+            },
+            {
+                data: 'created_at'
+            },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<a href="{{ url('/') }}/orders/${row.id}/edit" class="btn btn-primary">Edit</a>`;
+                }
+            }
+        ]
+    });
+});
+</script>
 @endsection

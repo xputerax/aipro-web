@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('products', 'ProductApiController')->name('api.products.index');
 
+        Route::get('orders', 'OrderApiController')->name('api.orders.index');
+
     });
 
 });
