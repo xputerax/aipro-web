@@ -50,15 +50,15 @@ $(function () {
                 data: 'username',
             },
             {
-                data: 'group',
+                data: 'group_id',
                 render: function (data, type, row, meta) {
-                    return `${data.name}`;
+                    return `${row.group.name}`;
                 }
             },
             {
-                data: 'branch',
+                data: 'branch_id',
                 render: function (data, type, row, meta) {
-                    return `<a href="{{ url('/') }}/branches/${data.id}">${data.name}</a>`;
+                    return `<a href="{{ url('/') }}/branches/${row.branch.id}">${row.branch.name}</a>`;
                 }
             },
             {
