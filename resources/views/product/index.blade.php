@@ -59,9 +59,9 @@ $(function () {
             }
         },
         {
-            data: 'brand',
+            data: 'brand_id',
             render: function (data, type, row, meta) {
-                return `<a href="{{ url('/') }}/brands/${data.id}">${data.name}</a>`;
+                return `<a href="{{ url('/') }}/brands/${data}">${row.brand.name}</a>`;
             }
         },
         {
@@ -100,7 +100,8 @@ $(function () {
                 </div>
             </form>
             `;
-        }
+        },
+        orderable: false
     })
     @endif
 

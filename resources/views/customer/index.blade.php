@@ -42,15 +42,14 @@ $(function () {
                 }
             },
             { data: 'phone' },
-            {
-                data: 'ic_number',
-            },
+            { data: 'ic_number' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `<a href="{{ url('/') }}/customers/${row.id}/select" class="btn btn-primary">Select</a>`;
                 },
-                searchable: false
+                searchable: false,
+                orderable: false
             }
         ],
         paging: true
