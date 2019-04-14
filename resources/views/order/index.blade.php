@@ -36,10 +36,10 @@ $(function () {
         ajax: '{{ route('api.orders.index') }}?status={{ $status }}',
         columns: [
             {
-                data: 'id',
+                data: 'customer.full_name',
                 render: function (data, type, row, meta) {
                     console.log(data, type, row, meta);
-                    return `<a href="{{ url('/') }}/orders/${data}">${row.customer.full_name}</a>`;
+                    return `<a href="{{ url('/') }}/orders/${row.id}">${row.customer.full_name}</a>`;
                 }
             },
             {
