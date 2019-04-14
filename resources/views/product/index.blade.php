@@ -59,9 +59,9 @@ $(function () {
             }
         },
         {
-            data: 'brand_id',
+            data: 'brand.name',
             render: function (data, type, row, meta) {
-                return `<a href="{{ url('/') }}/brands/${data}">${row.brand.name}</a>`;
+                return `<a href="{{ url('/') }}/brands/${row.brand.id}">${data}</a>`;
             }
         },
         {
