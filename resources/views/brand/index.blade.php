@@ -38,7 +38,7 @@ $(function() {
             {
                 data: 'name',
                 render: function (data, type, row, meta) {
-                    return `<a href="{{ url('/') }}/brands/${row.id}">${row.name}</a>`;
+                    return `<a href="{{ url('/') }}/brands/${row.id}/edit">${row.name}</a>`;
                 }
             },
             { data: 'description', defaultContent: '-' }
