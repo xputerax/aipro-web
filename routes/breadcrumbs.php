@@ -143,6 +143,11 @@ Breadcrumbs::for('brand-show', function ($trail, $brand) {
     $trail->push($brand->name, route('brands.show', $brand));
 });
 
+Breadcrumbs::for('brand-edit', function ($trail, $brand) {
+    $trail->parent('brand-index', $brand);
+    $trail->push($brand->name, route('brands.edit', $brand));
+});
+
 /**
  * Product
  */
