@@ -52,7 +52,8 @@ $(function () {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `<a href="{{ url('/') }}/orders/${row.id}/edit" class="btn btn-primary">Edit</a>`;
-                }
+                },
+                orderable: false
             }
         ]
     });
