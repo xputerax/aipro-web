@@ -66,11 +66,16 @@ $(function () {
         },
         {
             data: 'min_price',
+            type: 'num'
         },
         {
-            data: 'max_price'
+            data: 'max_price',
+            type: 'num'
         },
-        { data: 'stock' },
+        {
+            data: 'stock',
+            type: 'num'
+        },
         { data: 'type' },
     ];
 
