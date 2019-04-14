@@ -47,7 +47,8 @@ $(function () {
 
             return `<a href="{{ url('/') }}/branches/${row.id}/select" class="btn btn-primary">Select</a>`;
         },
-        searchable: false
+        searchable: false,
+        orderable: false
     });
     @endcan
 
