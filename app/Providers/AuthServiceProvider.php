@@ -258,5 +258,20 @@ class AuthServiceProvider extends ServiceProvider
             return $user->group_id === self::AIPRO_CEO_GROUP_ID;
         });
 
+        /**
+         * Product model section
+         */
+        Gate::define('list-model', function ($user) {
+            return true;
+        });
+
+        Gate::define('create-model', function ($user) {
+            return true;
+        });
+
+        Gate::define('edit-model', function ($user) {
+            return true;
+        });
+
     }
 }
