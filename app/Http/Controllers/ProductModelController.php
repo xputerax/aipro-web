@@ -7,6 +7,7 @@ use App\ProductModel;
 use App\Brand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ProductModelController extends Controller
 {
