@@ -173,3 +173,21 @@ Breadcrumbs::for('cart', function ($trail, $customer) {
     $trail->parent('customer-show', $customer);
     $trail->push('Cart', route('carts.viewByCustomer', $customer));
 });
+
+/**
+ * Product Model
+ */
+Breadcrumbs::for('model-index', function ($trail) {
+    $trail->parent('selected-branch');
+    $trail->push('Model', route('models.index'));
+});
+
+Breadcrumbs::for('model-create', function ($trail) {
+    $trail->parent('model-index');
+    $trail->push('Add', route('models.create'));
+});
+
+Breadcrumbs::for('model-edit', function ($trail, $model) {
+    $trail->parent('model-index');
+    $trail->push($model->name, route('models.edit', $model));
+});

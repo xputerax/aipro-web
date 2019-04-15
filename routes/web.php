@@ -54,6 +54,20 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('payments/{payment}', 'PaymentController@destroy')->name('payments.destroy');
 
+    Route::prefix('models')->group(function () {
+
+        Route::get('/', 'ProductModelController@index')->name('models.index');
+
+        Route::get('create', 'ProductModelController@create')->name('models.create');
+
+        Route::post('/', 'ProductModelController@store')->name('models.store');
+
+        Route::get('{model}/edit', 'ProductModelController@edit')->name('models.edit');
+
+        Route::put('{model}', 'ProductModelController@update')->name('models.update');
+
+    });
+
     Route::prefix('api')->group(function () {
 
         Route::get('customers', 'CustomerApiController')->name('api.customers.index');
@@ -67,6 +81,8 @@ Route::middleware('auth')->group(function () {
         Route::get('products', 'ProductApiController')->name('api.products.index');
 
         Route::get('orders', 'OrderApiController')->name('api.orders.index');
+
+        Route::get('models', 'ProductModelApiController')->name('api.product_models.index');
 
     });
 
