@@ -93,9 +93,18 @@
                     </li>
                     @endif
 
-                    @if(Auth::user()->can('list-product') || Auth::user()->can('create-product'))
+                    @if(Auth::user()->can('list-product') || Auth::user()->can('create-product')
+                        || Auth::user()->can('list-model') || Auth::user()->can('create-model'))
                     <li><a><i class="fa fa-gift"></i> Product<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
+                            @if(Auth::user()->can('list-model'))
+                            <li><a href="{{ route('models.index') }}">Model List</a></li>
+                            @endif
+
+                            @if(Auth::user()->can('create-model'))
+                            <li><a href="{{ route('models.create') }}">Add Model</a></li>
+                            @endif
+
                             @if(Auth::user()->can('list-product'))
                             <li><a href="{{ route('products.index') }}">Product List</a></li>
                             @endif
