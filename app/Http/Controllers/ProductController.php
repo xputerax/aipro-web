@@ -84,8 +84,7 @@ class ProductController extends Controller
 
         $brands = Brand::where('branch_id', session('selected_branch_id'))
             ->latest()
-            ->get()
-        ;
+            ->get();
 
         return view('product.form', compact('product', 'brands'));
     }
@@ -106,15 +105,13 @@ class ProductController extends Controller
 
         if ($product->update($data)) {
             return redirect()
-                ->route('products.show', compact('product'))
-                ->with('message', 'The product has been updated')
-            ;
+                ->route('products.edit', compact('product'))
+                ->with('message', 'The product has been updated');
         }
 
         return redirect()
-            ->route('products.show', compact('product'))
-            ->with('message', 'Failed to update product')
-        ;
+            ->route('products.edit', compact('product'))
+            ->with('message', 'Failed to update product');
     }
 
     /**
@@ -149,6 +146,7 @@ class ProductController extends Controller
             'brand_id' => [
                 'required',
                 'exists:brands,id',
+                'exists:product_models,brand_id'
             ],
 
             'min_price' => [
@@ -166,10 +164,16 @@ class ProductController extends Controller
                 'required',
                 'integer',
             ],
+
             'type' => [
                 'required',
                 'in:product,service',
             ],
+
+            'model_id' => [
+                'required',
+                'exists:product_models,id'
+            ]
         ];
     }
 
