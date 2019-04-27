@@ -71,7 +71,7 @@ class UsersTableSeeder extends Seeder
 
             // add staff to each branch
             factory(\App\User::class, 100)->create([
-                'branch_id' => $branch_id
+                'branch_id' => $branch->id
             ]);
         }
     }
