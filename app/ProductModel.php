@@ -16,4 +16,14 @@ class ProductModel extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'model_id', 'id');
+    }
 }
