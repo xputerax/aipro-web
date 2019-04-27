@@ -26,8 +26,6 @@
 @section('scripts')
 @parent
 
-@include('datatables')
-
 <script>
 $(function() {
     $("#brand_table").DataTable({

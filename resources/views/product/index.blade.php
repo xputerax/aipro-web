@@ -46,7 +46,6 @@
 
 @section('scripts')
 @parent
-@include('datatables')
 
 <script>
 $(function () {
