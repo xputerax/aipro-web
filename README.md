@@ -12,14 +12,12 @@
     * Change `__DIR__.'/../bootstrap/app.php'` to `__DIR__.'/../repositories/aipro-web/bootstrap/app.php'`
 
 6. Copy **\<aipro-web folder\>/.env.example** to **\<aipro-web folder\>/.env**
-7. Go to [keygen.io](https://keygen.io/ "Key Generator"), scroll down to "Laravel Encryption Key", click new and copy to clipboard.
-8. Open **\<aipro-web folder\>/.env** using the file editor and do the following edit:
+7. Open **\<aipro-web folder\>/.env** using the file editor and do the following edit:
 
 ```
 APP_NAME=<app name>
-APP_ENV=local
-APP_KEY=base64:<paste the encryption key here>
-APP_DEBUG=true
+APP_ENV=production
+APP_DEBUG=false
 
 APP_URL=<website url>
 
