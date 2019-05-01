@@ -27,3 +27,5 @@ DB_DATABASE=<db name>
 DB_USERNAME=<db user>
 DB_PASSWORD=<db password>
 ```
+
+8. Export **\<aipro-web folder\>/database/database.sql** into your database
